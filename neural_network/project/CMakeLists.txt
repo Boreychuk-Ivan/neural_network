@@ -4,10 +4,7 @@ project(main)
 
 set(SOURCES main.cpp)
 
-add_executable(main ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_include_directories(main PUBLIC ../src/neural_network_lib)
-target_include_directories(main PUBLIC ../src/matrix_lib)
-
-target_link_libraries(main PUBLIC neural_network_lib)
+target_link_libraries(${PROJECT_NAME} matrix_lib neural_network_lib)
 

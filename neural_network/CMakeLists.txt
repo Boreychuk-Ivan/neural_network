@@ -14,14 +14,8 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MTd")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 
 #Directories
-set(SRC_DIR src)
-set(PRJCT_DIR project)
-set(TESTS_DIR tests)
-
-add_subdirectory(${SRC_DIR})
-add_subdirectory(${PRJCT_DIR})
-# add_subdirectory(${TESTS_DIR})
-
-include_directories(src)
+add_subdirectory(neural_network_lib)
+add_subdirectory(matrix_lib)
+add_subdirectory(project)
 
 
