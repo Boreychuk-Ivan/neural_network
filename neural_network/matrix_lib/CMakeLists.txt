@@ -11,3 +11,5 @@ target_sources(matrix_lib INTERFACE "${CMAKE_CURRENT_LIST_DIR}/matrix_lib.h")
 target_include_directories(matrix_lib INTERFACE ${PROJECT_SOURCE_DIR})
 
 add_custom_target(matrix_lib_ SOURCES ${CMAKE_CURRENT_LIST_DIR}/matrix_lib.h)
+
+target_link_libraries(matrix_lib INTERFACE pch)

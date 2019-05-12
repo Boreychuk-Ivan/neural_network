@@ -7,4 +7,4 @@ set(SOURCES main.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} matrix_lib neural_network_lib)
-
+target_link_libraries(${PROJECT_NAME} pch)

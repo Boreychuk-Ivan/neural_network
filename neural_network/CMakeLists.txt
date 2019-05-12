@@ -19,3 +19,8 @@ add_subdirectory(matrix_lib)
 add_subdirectory(project)
 
 
+#PCH
+set(PCH_SOURCES pch.cpp pch.h)
+add_library(pch STATIC ${PCH_SOURCES})
+target_include_directories(pch
+      PUBLIC ${PROJECT_SOURCE_DIR})
