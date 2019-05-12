@@ -9,11 +9,11 @@
 template <class T>
 class Matrix
 {
-private:
+protected:
 	size_t m_rows, m_cols;
 	std::vector<T> m_matrix;
 public:
-	Matrix() :m_rows(0), m_cols(0), m_matrix(0) {};
+	Matrix() :m_rows(0), m_cols(0) {};
 	Matrix(const size_t rows, const size_t cols);
 	Matrix(const size_t rows, const size_t cols, T* mtx);
 	Matrix(const std::initializer_list<T> &list);
@@ -31,13 +31,13 @@ public:
 	T at(size_t row, size_t col) const { return m_matrix.at( row*m_cols + col); };
 
 	std::vector<T> getVector() const;
-	Matrix getRow (const size_t row) const;
-	Matrix getCol (const size_t col) const;
+	Matrix GetRow (const size_t row) const;
+	Matrix GetCol (const size_t col) const;
 
 
-	size_t getSize() const { return m_rows * m_cols; }
-	size_t getNumRows() const { return m_rows; }
-	size_t getNumCols() const { return m_cols; }
+	size_t GetSize() const { return m_rows * m_cols; }
+	size_t GetNumRows() const { return m_rows; }
+	size_t GetNumCols() const { return m_cols; }
 
 	template <class Tf>
 	friend Matrix<Tf> operator+ (const Matrix<Tf>& kLeftMtx, const Matrix<Tf>& kRightMtx);
@@ -65,6 +65,8 @@ public:
 	template <class Tf>
 	friend Matrix<Tf> operator* (const Tf &num, const Matrix<Tf>& kRightMtx);
 
+    Matrix<T> dot(const Matrix<T>& kRightMtx);
+
 	template <class Tf>
 	friend Matrix<Tf> operator! (const Matrix<Tf>& kRightMtx);  //Transpose
 
@@ -79,6 +81,7 @@ public:
 template <class T>
 Matrix<T>::Matrix(const size_t rows, const size_t cols) : m_rows(rows), m_cols(cols)
 {
+    m_matrix.reserve(rows * cols);
     for (int it(0); it < rows*cols; ++it) m_matrix.push_back(0);
 }
 
@@ -86,6 +89,7 @@ template <class T>
 Matrix<T>::Matrix(const size_t rows, const size_t cols, T* mtx) : m_rows(rows), m_cols(cols)
 {
 	assert(num_list.size() < rows*cols);
+    m_matrix.reserve(rows * cols);
 	for (int it = 0; it < m_rows*m_cols){
 		m_matrix.push_back(*(mtx + it));
 	}
@@ -96,6 +100,7 @@ Matrix<T>::Matrix(const std::initializer_list<T> &list)
 {
 	m_cols = static_cast<size_t>(list.size());
 	m_rows = 1;
+    m_matrix.reserve(m_rows * m_cols);
 	for (auto &num : list) { m_matrix.push_back(num); }
 }
 
@@ -134,15 +139,15 @@ template <class T>
 Matrix<T>& Matrix<T>::operator=(const T* input_arr)
 {
 	m_matrix.clear();
-	for (int it = 0; it < this->getSize(); ++it) {
+    m_matrix.reserve(m_cols * m_rows);
+	for (int it = 0; it < m_cols*m_rows; ++it) {
 		m_matrix.push_back(*(input_arr + it));
 	}
 	return *this;
 }
 
-
 template <class T>
-Matrix<T> Matrix<T>::getRow(const size_t kRow) const
+Matrix<T> Matrix<T>::GetRow(const size_t kRow) const
 {
 	assert(kRow < m_rows);
 	Matrix<T> row_vector(1,m_cols);
@@ -153,7 +158,7 @@ Matrix<T> Matrix<T>::getRow(const size_t kRow) const
 }
 
 template <class T>
-Matrix<T> Matrix<T>::getCol(const size_t kCol) const
+Matrix<T> Matrix<T>::GetCol(const size_t kCol) const
 {
 	assert(kCol < m_cols);
 	Matrix<T> col_vector(m_rows, 1);
@@ -161,6 +166,17 @@ Matrix<T> Matrix<T>::getCol(const size_t kCol) const
 		col_vector.at(row) = (this->at(row, kCol));
 	}
 	return col_vector;
+}
+
+template<class T>
+inline Matrix<T> Matrix<T>::dot(const Matrix<T>& kRightMtx)
+{
+    assert(m_cols == kRightMtx.m_cols && m_rows == kRightMtx.m_rows);
+    for(int it = 0; it < m_matrix.size(); ++it)
+    {
+        m_matrix.at(it) *= kRightMtx.at(it);
+    }
+    return *this;
 }
 
 template <class T>
@@ -177,7 +193,7 @@ Matrix<T> operator+(const Matrix<T>& kLeftMtx, const Matrix<T>& kRightMtx)
 	assert(kLeftMtx.m_cols == kRightMtx.m_cols);
 	assert(kLeftMtx.m_rows == kRightMtx.m_rows);
 
-	for (int it(0); it < kLeftMtx.getSize(); ++it) {
+	for (int it(0); it < kLeftMtx.GetSize(); ++it) {
 		mtx_sum.at(it) = kLeftMtx.at(it) + kRightMtx.at(it);
 	}
 	return mtx_sum;
@@ -188,7 +204,7 @@ template<class Tf>
 Matrix<Tf> operator+(const Matrix<Tf>& kLeftMtx, Tf num)
 {
 	Matrix<Tf> mtx_sum(kLeftMtx);
-	for (int it(0); it < kLeftMtx.getSize(); ++it) {
+	for (int it(0); it < kLeftMtx.GetSize(); ++it) {
 		mtx_sum.at(it) = kLeftMtx.at(it) + num;
 	}
 	return mtx_sum;
@@ -201,7 +217,7 @@ template<class Tf>
 Matrix<Tf> operator-(const Matrix<Tf>& kLeftMtx, Tf num)
 {
 	Matrix<Tf> mtx_diff(kLeftMtx);
-	for (int it(0); it < kLeftMtx.getSize(); ++it) {
+	for (int it(0); it < kLeftMtx.GetSize(); ++it) {
 		mtx_diff.at(it) = kLeftMtx.at(it) - num;
 	}
 	return mtx_diff;
@@ -215,7 +231,7 @@ Matrix<Tf> operator-(const Matrix<Tf>& kLeftMtx, const Matrix<Tf>& kRightMtx)
 	assert(kLeftMtx.m_cols == kRightMtx.m_cols);
 	assert(kLeftMtx.m_rows == kRightMtx.m_rows);
 
-	for (int it(0); it < kLeftMtx.getSize(); ++it) {
+	for (int it(0); it < kLeftMtx.GetSize(); ++it) {
 		mtx_diff.at(it) = kLeftMtx.at(it) - kRightMtx.at(it);
 	}
 	return mtx_diff;
@@ -230,8 +246,8 @@ Matrix<Tf> operator* (const Matrix<Tf>& kLeftMtx, const Matrix<Tf>& kRightMtx)
 
 	for (int row = 0; row < kLeftMtx.m_rows; ++row) {
 		for (int col = 0; col < kRightMtx.m_cols; ++col) {
-			std::vector<Tf> a_row = kLeftMtx.getRow(row).m_matrix;
-			std::vector<Tf> b_col = kRightMtx.getCol(col).m_matrix;
+			std::vector<Tf> a_row = kLeftMtx.GetRow(row).m_matrix;
+			std::vector<Tf> b_col = kRightMtx.GetCol(col).m_matrix;
 
 			std::vector<Tf> product_elements;
 			for (int it = 0; it < a_row.size(); ++it) {
@@ -251,7 +267,7 @@ template <class Tf>
 Matrix<Tf> operator* (const Matrix<Tf>& kLeftMtx, const Tf& num)
 {
 	Matrix<Tf> product_mtx(kLeftMtx);
-	for (int it = 0; it < kLeftMtx.getSize(); ++it) {
+	for (int it = 0; it < kLeftMtx.GetSize(); ++it) {
 		product_mtx.at(it) = kLeftMtx.at(it)*num;
 	}
 	return product_mtx;
@@ -265,7 +281,7 @@ template <class Tf>
 Matrix<Tf> operator% (const Matrix<Tf>& kLeftMtx, const Tf& num)
 {
 	Matrix<Tf> result_mtx(kLeftMtx);
-	for (int it = 0; it < kLeftMtx.getSize(); ++it) {
+	for (int it = 0; it < kLeftMtx.GetSize(); ++it) {
 		result_mtx.at(it) = (kLeftMtx.at(it) % num);
 	}
 	return result_mtx;
@@ -275,7 +291,7 @@ template<>
 inline Matrix<double> operator% (const Matrix<double>& kLeftMtx, const double& num)
 {
 	Matrix<double> result_mtx(kLeftMtx);
-	for (int it = 0; it < kLeftMtx.getSize(); ++it) {
+	for (int it = 0; it < kLeftMtx.GetSize(); ++it) {
 		result_mtx.at(it) = fmod(kLeftMtx.at(it), num);
 	}
 	return result_mtx;
@@ -285,7 +301,7 @@ template<>
 inline Matrix<float> operator% (const Matrix<float>& kLeftMtx, const float& num)
 {
 	Matrix<float> result_mtx(kLeftMtx);
-	for (int it = 0; it < kLeftMtx.getSize(); ++it) {
+	for (int it = 0; it < kLeftMtx.GetSize(); ++it) {
 		result_mtx.at(it) = fmod(kLeftMtx.at(it), num);
 	}
 	return result_mtx;
@@ -306,9 +322,9 @@ Matrix<Tf> operator! (const Matrix<Tf>& kRightMtx)
 template <class T>
 std::ostream& operator<<(std::ostream& out, const Matrix<T>& kRightMtx)
 {
-
-	for (int row(0); row < kRightMtx.getNumRows(); ++row) {
-		for (int col(0); col < kRightMtx.getNumCols(); ++col) {
+    out << std::endl;
+	for (int row(0); row < kRightMtx.GetNumRows(); ++row) {
+		for (int col(0); col < kRightMtx.GetNumCols(); ++col) {
 			out << (kRightMtx.at(row, col)>=0 ? " " : "") << kRightMtx.at(row, col) << "\t";
 		}
 		out << std::endl;
@@ -319,8 +335,9 @@ std::ostream& operator<<(std::ostream& out, const Matrix<T>& kRightMtx)
 template<>
 inline std::ostream& operator<<(std::ostream& out, const Matrix<uint8_t>& kRightMtx)
 {
-	for (int row(0); row < kRightMtx.getNumRows(); ++row) {
-		for (int col(0); col < kRightMtx.getNumCols(); ++col) {
+    out << std::endl ;
+	for (int row(0); row < kRightMtx.GetNumRows(); ++row) {
+		for (int col(0); col < kRightMtx.GetNumCols(); ++col) {
 			out << (kRightMtx.at(row, col) >= 0 ? " " : "") << static_cast<unsigned int>(kRightMtx.at(row, col)) << "\t";
 		}
 		out << std::endl;
@@ -333,10 +350,46 @@ template <class Tf>
 Tf SumElements(const Matrix<Tf>& kMatrix)
 {
 	Tf accumulator(0);
-	for (int element = 0; element < kMatrix.getSize(); ++element) {
+	for (int element = 0; element < kMatrix.GetSize(); ++element) {
 		accumulator += kMatrix.at(element);
 	}
 	return accumulator;
 }
 
-#include "matrix_lib.cpp"
+namespace VTYPE
+{
+    enum VTYPE_ENUM
+    {
+        ROW,
+        COL
+    };
+}
+
+template <class T, VTYPE::VTYPE_ENUM VECTOR_TYPE = VTYPE::ROW>
+class Vector : public Matrix<T>
+{
+private:
+    using Matrix::m_rows;
+    using Matrix::m_cols;
+    using Matrix::m_matrix;
+public:
+    using Matrix::operator=;
+    Vector() : Matrix<T>(){};
+    Vector(const size_t size)
+    {
+        m_matrix.reserve(size);
+        m_matrix.insert(m_matrix.begin(), size, 0);
+        m_rows = VECTOR_TYPE == VTYPE::ROW ? 1 : size;
+        m_cols = VECTOR_TYPE == VTYPE::ROW ? size : 1;
+    };
+    Vector(const size_t size, T* vector) : Matrix<T>(1, size)
+    {
+        m_matrix.reserve(size);
+        m_matrix.insert(m_matrix.begin(), vector, vector+size+1);
+        m_rows = VECTOR_TYPE == VTYPE::ROW ? 1 : size;
+        m_cols = VECTOR_TYPE == VTYPE::ROW ? size : 1;
+    };
+
+    bool IsRow() const { return (VECTOR_TYPE == VTYPE::ROW ? 1 : 0); }
+    bool IsCol() const { return (VECTOR_TYPE == VTYPE::COL ? 1 : 0); }
+};
