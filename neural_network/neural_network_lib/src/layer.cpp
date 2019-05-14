@@ -40,10 +40,10 @@ void Layer::CalculateLocalFields(const Vector<double>& kInputVector)
 void Layer::CalculateActivatedValues()
 {
     for(auto& neuron : m_neurons)
-        neuron.CalculateActivatedValues();
+        neuron.CalculateActivatedValue();
 }
 
-void Layer::CalculateDerivativeValue()
+void Layer::CalculateDerivativeValues()
 {
     for (auto& neuron : m_neurons)
         neuron.CalculateDerivativeValue();
@@ -81,8 +81,26 @@ void Layer::Display()
 {
     std::cout << "Layer parametrs:\n";
     std::cout << "Neurons number: " << m_neurons.size() << "\n";
+    std::cout << "Activation function:" << 
+        Functions::Disp(m_neurons.at(1).GetActivationFunctionType()) << "\n";
     std::cout << "Number of inputs: " << m_synaptic_weights.GetNumCols() << "\n";
     std::cout << "Biases : " << m_biases;
     std::cout << "Synaptic weights" << m_synaptic_weights << "\n";
     std::cout << "Delta weights" << m_delta_weights << "\n";
+}
+
+void Layer::DisplayNeurons()
+{
+    std::cout << "Layer neurons parametrs:\n";
+    std::cout << "lf\tav\tdv\n";
+    for (int it = 0; it < m_neurons.size(); ++it)
+    {
+        std::cout 
+            << (m_neurons.at(it).GetLocalFiled() > 0 ? "" : " ")
+            << m_neurons.at(it).GetLocalFiled() << "\t"
+            << (m_neurons.at(it).GetActivatedValue() > 0 ? "" : " ")
+            << m_neurons.at(it).GetActivatedValue() << "\t"
+            << (m_neurons.at(it).GetDerivativeValue() > 0 ? "" : " ")
+            << m_neurons.at(it).GetDerivativeValue() << "\n";
+    }
 }

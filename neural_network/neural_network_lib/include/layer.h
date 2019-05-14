@@ -1,14 +1,15 @@
 #pragma once
 #include "pch.h"
 #include "neuron.h"
-#include "matrix_lib/matrix_lib.h"
+
 
 class Layer
 {
-private:
+protected:
     std::vector<Neuron> m_neurons;
+private:
     Matrix<double> m_synaptic_weights;
-    Matrix<double> m_delta_weights; //??
+    Matrix<double> m_delta_weights;
     Vector<double, VTYPE::COL> m_biases;
 public:
     Layer() = delete;
@@ -20,11 +21,13 @@ public:
 
     void CalculateLocalFields(const Vector<double>& kInputVector);
     void CalculateActivatedValues();
-    void CalculateDerivativeValue();
+    void CalculateDerivativeValues();
 
     void SetLocalField(const Vector<double> kLocalFieldVector);
     void SetActivatedValues(const Vector<double> kActivatedValueVector);
     void SetBiases(const Vector<double> kBiases);
 
     void Display();
+    void DisplayNeurons();
+
 };
