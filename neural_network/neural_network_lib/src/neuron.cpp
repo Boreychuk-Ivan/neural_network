@@ -42,10 +42,10 @@ void Neuron::SetActivationFunction(ActivationFunctionType type)
         m_activation_function = Functions::sigmoid;
         m_derivative_function = Functions::dsigmoid;
     }
-    else if (type == IDENTITY)
+    else if (type == LINEAR)
     {
-        m_activation_function = Functions::identity;
-        m_derivative_function = Functions::didentity;
+        m_activation_function = Functions::linear;
+        m_derivative_function = Functions::dlinear;
     }
     else
     {
@@ -74,9 +74,9 @@ std::string Functions::Disp(ActivationFunctionType type)
     {
         return std::string("SIGMOID");
     }
-    if (type == IDENTITY)
+    if (type == LINEAR)
     {
-        return std::string("IDENTITY");
+        return std::string("LINEAR");
     }
     else
     {

@@ -4,11 +4,16 @@ project(neural_network_lib)
 
 set(SOURCES src/neuron.cpp>
             src/neural_network.cpp>
-            src/layer.cpp)
+            src/layer.cpp>
+            src/back_propagation.cpp>
+            src/forward_propagation.cpp)
 
 set(HEADERS include/neuron.h>
             include/neural_network.h>
-            include/layer.h)
+            include/layer.h>
+            include/back_propagation.h>
+            include/forward_propagation.h>
+            include/activation_functions.h)
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
 
