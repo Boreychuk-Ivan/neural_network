@@ -23,7 +23,6 @@ public:
 	Matrix& operator=(const std::initializer_list<T> &list);
 	Matrix& operator=(const T*);
 
-
 	T& at(size_t cell) { assert(cell < m_rows*m_cols);  return m_matrix.at(cell); };
 	T& at(size_t row, size_t col) { return m_matrix.at(row*m_cols + col); };
 
@@ -33,7 +32,6 @@ public:
 	std::vector<T> getVector() const;
 	Matrix GetRow (const size_t row) const;
 	Matrix GetCol (const size_t col) const;
-
 
 	size_t GetSize() const { return m_rows * m_cols; }
 	size_t GetNumRows() const { return m_rows; }
@@ -356,6 +354,8 @@ Tf SumElements(const Matrix<Tf>& kMatrix)
 	return accumulator;
 }
 
+
+//Class Vector
 namespace VTYPE
 {
     enum VTYPE_ENUM
@@ -375,6 +375,11 @@ private:
 public:
     using Matrix::operator=;
     Vector() : Matrix<T>(){};
+    Vector(const std::initializer_list<T>& list) : Matrix(list)
+    {
+        m_rows = VECTOR_TYPE == VTYPE::ROW ? 1 : list.size();
+        m_cols = VECTOR_TYPE == VTYPE::ROW ? list.size() : 1;
+    };
     Vector(const size_t size)
     {
         m_matrix.reserve(size);
