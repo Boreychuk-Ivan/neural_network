@@ -8,7 +8,7 @@ Neuron::Neuron(double activated_value, ActivationFunctionType type)
     SetActivationFunction(type);
 }
 
-void Neuron::CalculateActivatedValues()
+void Neuron::CalculateActivatedValue()
 {
     m_activated_value = m_activation_function(m_local_field);
 }

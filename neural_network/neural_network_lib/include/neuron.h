@@ -18,12 +18,19 @@ public:
     Neuron() = delete;
     Neuron(double activated_value, ActivationFunctionType type);
     
-    void CalculateActivatedValues();
+    void CalculateActivatedValue();
     void CalculateDerivativeValue();
-    void Display();
 
     void SetActivationFunction(ActivationFunctionType);
     void SetLocalField(const double&);
     void SetActivatedValue(const double&);
+
+    auto GetActivationFunctionType() const { return m_activation_function_type; }
+    auto GetLocalFiled() const { return m_local_field; };
+    auto GetActivatedValue() const { return m_activated_value; }
+    auto GetDerivativeValue() const { return m_deriative_value; }
+    auto GetLocalGradient()const { return m_local_gradient;  }
+    
+    void Display();
 };
 
