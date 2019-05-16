@@ -14,18 +14,24 @@ private:
 public:
     Layer() = delete;
     Layer(const unsigned& inputs_number, const unsigned& neurons_number,
-          const ActivationFunctionType& activation_function);
+          const ActivationFunctionType& kActivationFunction);
 
     void InitializeRandomWeights(const double& min_value, const double& max_value);
     void InitializeRandomBiases(const double& min_value, const double& max_value);
 
-    void CalculateLocalFields(const Vector<double>& kInputVector);
+    void CalculateLocalFields(Vector<double> input_vector);
     void CalculateActivatedValues();
     void CalculateDerivativeValues();
 
+    void SetActivationFunction(const ActivationFunctionType& kActivationFunction);
     void SetLocalField(const Vector<double> kLocalFieldVector);
     void SetActivatedValues(const Vector<double> kActivatedValueVector);
     void SetBiases(const Vector<double> kBiases);
+
+    unsigned GetNeuronsNumber();
+    Vector<double> GetLocalField();
+    Vector<double> GetActivatedValues();
+    Vector<double> DerivativeValues();
 
     void Display();
     void DisplayNeurons();

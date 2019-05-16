@@ -28,12 +28,14 @@ void Layer::InitializeRandomBiases(const double& min_value, const double& max_va
     }
 }
 
-void Layer::CalculateLocalFields(const Vector<double>& kInputVector)
+void Layer::CalculateLocalFields(Vector<double> input_vector)
 {
-    assert(kInputVector.IsCol() == 1);
+    unsigned inputs_number = m_synaptic_weights.GetNumCols();
+    assert(input_vector.GetSize() == inputs_number);
+    if (input_vector.IsRow()) input_vector = !input_vector; //Transpose
     unsigned neurons_number = m_neurons.size();
     Vector<double> local_field(neurons_number);
-    local_field = (m_synaptic_weights * kInputVector + m_biases);
+    local_field = (m_synaptic_weights * input_vector + m_biases);
     SetLocalField(local_field);
 }
 
@@ -47,6 +49,14 @@ void Layer::CalculateDerivativeValues()
 {
     for (auto& neuron : m_neurons)
         neuron.CalculateDerivativeValue();
+}
+
+void Layer::SetActivationFunction(const ActivationFunctionType & kActivationFunction)
+{
+    for (auto& neuron : m_neurons)
+    {
+        neuron.SetActivationFunction(kActivationFunction);
+    }
 }
 
 void Layer::SetLocalField(const Vector<double> kLocalFieldVector)
@@ -77,6 +87,41 @@ void Layer::SetBiases(const Vector<double> kBiases)
     }
 }
 
+unsigned Layer::GetNeuronsNumber()
+{
+    return m_neurons.size();
+}
+
+Vector<double> Layer::GetLocalField()
+{
+    Vector<double> local_fields(m_neurons.size());
+    for (int neuron_it = 0; neuron_it < m_neurons.size(); ++neuron_it)
+    {
+        local_fields.at(neuron_it) = m_neurons.at(neuron_it).GetLocalFiled();
+    }
+    return local_fields;
+}
+
+Vector<double> Layer::GetActivatedValues()
+{
+    Vector<double> activated_values(m_neurons.size());
+    for(int neuron_it = 0; neuron_it < m_neurons.size(); ++neuron_it)
+    {
+        activated_values.at(neuron_it) = m_neurons.at(neuron_it).GetActivatedValue();
+    }
+    return activated_values;
+}
+
+Vector<double> Layer::DerivativeValues()
+{
+    Vector<double> derivative_values(m_neurons.size());
+    for (int neuron_it = 0; neuron_it < m_neurons.size(); ++neuron_it)
+    {
+        derivative_values.at(neuron_it) = m_neurons.at(neuron_it).GetDerivativeValue();
+    }
+    return derivative_values;
+}
+
 void Layer::Display()
 {
     std::cout << "Layer parametrs:\n";
@@ -87,12 +132,15 @@ void Layer::Display()
     std::cout << "Biases : " << m_biases;
     std::cout << "Synaptic weights" << m_synaptic_weights << "\n";
     std::cout << "Delta weights" << m_delta_weights << "\n";
+    std::cout << "\n";
 }
 
 void Layer::DisplayNeurons()
 {
     std::cout << "Layer neurons parametrs:\n";
     std::cout << "lf\tav\tdv\n";
+    std::cout.precision(3);
+    std::fixed;
     for (int it = 0; it < m_neurons.size(); ++it)
     {
         std::cout 
@@ -103,4 +151,5 @@ void Layer::DisplayNeurons()
             << (m_neurons.at(it).GetDerivativeValue() > 0 ? "" : " ")
             << m_neurons.at(it).GetDerivativeValue() << "\n";
     }
+    std::cout << "\n";
 }
