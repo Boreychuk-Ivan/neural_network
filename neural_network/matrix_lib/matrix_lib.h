@@ -37,6 +37,8 @@ public:
 	size_t GetNumRows() const { return m_rows; }
 	size_t GetNumCols() const { return m_cols; }
 
+    bool IsEqualSize(const Matrix kOther);
+
 	template <class Tf>
 	friend Matrix<Tf> operator+ (const Matrix<Tf>& kLeftMtx, const Matrix<Tf>& kRightMtx);
 
@@ -86,9 +88,9 @@ Matrix<T>::Matrix(const size_t rows, const size_t cols) : m_rows(rows), m_cols(c
 template <class T>
 Matrix<T>::Matrix(const size_t rows, const size_t cols, T* mtx) : m_rows(rows), m_cols(cols)
 {
-	assert(num_list.size() < rows*cols);
     m_matrix.reserve(rows * cols);
-	for (int it = 0; it < m_rows*m_cols){
+	for (size_t it = 0; it < m_rows*m_cols; ++it)
+    {
 		m_matrix.push_back(*(mtx + it));
 	}
 }
@@ -164,6 +166,15 @@ Matrix<T> Matrix<T>::GetCol(const size_t kCol) const
 		col_vector.at(row) = (this->at(row, kCol));
 	}
 	return col_vector;
+}
+
+template<class T>
+inline bool Matrix<T>::IsEqualSize(const Matrix kOther)
+{
+    if (m_cols == kOther.m_cols && m_rows == kOther.m_rows) 
+        return true;
+    else
+        return false;
 }
 
 template<class T>
