@@ -78,12 +78,18 @@ void Layer::SetActivatedValues(const Vector<double> kActivatedValueVector)
     }
 }
 
+void Layer::SetSynapticWeights(const Matrix<double> kSynapticWeigths)
+{
+    assert(m_synaptic_weights.IsEqualSize(kSynapticWeigths));
+    m_synaptic_weights = kSynapticWeigths;
+}
+
 void Layer::SetBiases(const Vector<double> kBiases)
 {
     assert(m_neurons.size() == kBiases.GetSize());
     for (int it = 0; it < m_neurons.size(); ++it)
     {
-        m_biases.at(kBiases.at(it));
+        m_biases.at(it) = kBiases.at(it);
     }
 }
 
@@ -129,7 +135,7 @@ void Layer::Display()
     std::cout << "Activation function:" << 
         Functions::Disp(m_neurons.at(1).GetActivationFunctionType()) << "\n";
     std::cout << "Number of inputs: " << m_synaptic_weights.GetNumCols() << "\n";
-    std::cout << "Biases : " << m_biases;
+    std::cout << "Biases : " << m_biases << "\n";
     std::cout << "Synaptic weights" << m_synaptic_weights << "\n";
     std::cout << "Delta weights" << m_delta_weights << "\n";
     std::cout << "\n";

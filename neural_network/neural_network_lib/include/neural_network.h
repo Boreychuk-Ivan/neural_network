@@ -16,10 +16,14 @@ public:
     void CalculateOutputs();
 
     void SetActivationFunction(const unsigned& kNumLayer, const ActivationFunctionType& kActivationFunction);
+    void SetSynapticWeigths(const unsigned& kNumLayer, const Matrix<double> kSynapticWeigths);
+    void SetBiases(const unsigned& kNumLayer, const Vector<double> kBiases);
 
     Vector<double> GetOutputs();
 
     void DisplayArchitecture();
+    void DisplayLayers();
+    void DisplayNeurons();
     void DisplayLayerParametrs(const unsigned& kNumLayer);
     void DisplayLayerNeurons(const unsigned& kNumLayer);
 };

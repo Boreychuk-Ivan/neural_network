@@ -34,16 +34,19 @@ void Neuron::SetActivationFunction(ActivationFunctionType type)
 {
     if (type == TANH)
     {
+        m_activation_function_type = TANH;
         m_activation_function = Functions::tanh;
         m_derivative_function = Functions::dtanh;
     }
     else if (type == SIGMOID)
     {
+        m_activation_function_type = SIGMOID;
         m_activation_function = Functions::sigmoid;
         m_derivative_function = Functions::dsigmoid;
     }
     else if (type == LINEAR)
     {
+        m_activation_function_type = LINEAR;
         m_activation_function = Functions::linear;
         m_derivative_function = Functions::dlinear;
     }

@@ -26,6 +26,7 @@ public:
     void SetActivationFunction(const ActivationFunctionType& kActivationFunction);
     void SetLocalField(const Vector<double> kLocalFieldVector);
     void SetActivatedValues(const Vector<double> kActivatedValueVector);
+    void SetSynapticWeights(const Matrix<double> kSynapticWeigths);
     void SetBiases(const Vector<double> kBiases);
 
     unsigned GetNeuronsNumber();

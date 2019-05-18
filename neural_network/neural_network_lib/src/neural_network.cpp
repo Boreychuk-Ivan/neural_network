@@ -4,7 +4,7 @@ NeuralNetwork::NeuralNetwork(const std::vector<unsigned>& kArchitecture)
 {
     unsigned layers_number = kArchitecture.size();   
     m_neuron_layers.reserve(layers_number);
-    for (int layer_it = 0; layer_it < layers_number-1; ++layer_it)
+    for (size_t layer_it = 0; layer_it < layers_number-1; ++layer_it)
     {
         m_neuron_layers.push_back(Layer(kArchitecture.at(layer_it), kArchitecture.at(layer_it + 1), SIGMOID));
     }
@@ -18,7 +18,7 @@ void NeuralNetwork::PushInputData(const Vector<double> kInputVector)
 
 void NeuralNetwork::CalculateOutputs()
 {
-    for (int layer_it = 0; layer_it < m_neuron_layers.size()-1; ++layer_it)
+    for (size_t layer_it = 0; layer_it < m_neuron_layers.size()-1; ++layer_it)
     {
         m_neuron_layers.at(layer_it).CalculateActivatedValues();
         Vector<double> input_next_layer = m_neuron_layers.at(layer_it).GetActivatedValues();
@@ -32,6 +32,18 @@ void NeuralNetwork::SetActivationFunction(const unsigned& kNumLayer, const Activ
 {
     m_neuron_layers.at(kNumLayer).SetActivationFunction(kActivationFunction);
 }
+
+void NeuralNetwork::SetSynapticWeigths(const unsigned& kNumLayer, const Matrix<double> kSynapticWeigths)
+{
+    m_neuron_layers.at(kNumLayer).SetSynapticWeights(kSynapticWeigths);
+}
+
+void NeuralNetwork::SetBiases(const unsigned& kNumLayer, const Vector<double> kBiases)
+{
+    m_neuron_layers.at(kNumLayer).SetBiases(kBiases);
+}
+
+
 
 Vector<double> NeuralNetwork::GetOutputs()
 {
@@ -49,6 +61,24 @@ void NeuralNetwork::DisplayArchitecture()
             << m_neuron_layers.at(layer_it).GetNeuronsNumber() << "\n";
     }
     std::cout << "\n";
+}
+
+void NeuralNetwork::DisplayLayers()
+{
+    for (size_t layer_it = 0; layer_it < m_neuron_layers.size(); ++layer_it)
+    {
+        std::cout << "Layer #" << layer_it << "\n";
+        DisplayLayerParametrs(layer_it);
+    }
+}
+
+void NeuralNetwork::DisplayNeurons()
+{
+    for (size_t layer_it = 0; layer_it < m_neuron_layers.size(); ++layer_it)
+    {
+        std::cout << "Layer #" << layer_it << "\n";
+        DisplayLayerNeurons(layer_it);
+    }
 }
 
 void NeuralNetwork::DisplayLayerParametrs(const unsigned & kNumLayer)
