@@ -19,9 +19,9 @@ public:
     void InitializeRandomWeights(const double& min_value, const double& max_value);
     void InitializeRandomBiases(const double& min_value, const double& max_value);
 
-    void CalculateLocalFields(Vector<double> input_vector);
-    void CalculateActivatedValues();
-    void CalculateDerivativeValues();
+    Vector<double> CalculateLocalFields(Vector<double> input_vector);
+    Vector<double> CalculateActivatedValues();
+    Vector<double> CalculateDerivativeValues();
 
     void SetActivationFunction(const ActivationFunctionType& kActivationFunction);
     void SetLocalField(const Vector<double> kLocalFieldVector);

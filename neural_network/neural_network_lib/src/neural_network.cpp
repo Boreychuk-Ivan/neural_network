@@ -13,25 +13,30 @@ NeuralNetwork::NeuralNetwork(const std::vector<unsigned>& kArchitecture)
 
 void NeuralNetwork::PushInputData(const Vector<double> kInputVector)
 {
-    m_neuron_layers.at(0).CalculateLocalFields(kInputVector);
+    Vector<double> local_field =  m_neuron_layers.at(0).CalculateLocalFields(kInputVector);
+    m_neuron_layers.at(0).SetLocalField(local_field);
 }
 
 Vector<double> NeuralNetwork::CalculateOutputs()
 {
     for (size_t layer_it = 0; layer_it < m_neuron_layers.size()-1; ++layer_it)
     {
-        m_neuron_layers.at(layer_it).CalculateActivatedValues();
-        Vector<double> input_next_layer = m_neuron_layers.at(layer_it).GetActivatedValues();
-        m_neuron_layers.at(layer_it+1).CalculateLocalFields(input_next_layer);
+        Vector<double> input_next_layer = m_neuron_layers.at(layer_it).CalculateActivatedValues();
+        Vector<double> local_field = m_neuron_layers.at(layer_it+1).CalculateLocalFields(input_next_layer);
+        m_neuron_layers.at(layer_it + 1).SetLocalField(local_field);
     }
-    m_neuron_layers.back().CalculateActivatedValues();
-    return GetOutputs();
+    return m_neuron_layers.back().CalculateActivatedValues();
 }
 
 void NeuralNetwork::CalculateDerivativeValues()
 {
     for (auto& layer : m_neuron_layers)
         layer.CalculateDerivativeValues();
+}
+
+Vector<double> NeuralNetwork::CalculateDerivativeValuesOnLayer(const unsigned& kNumLayer)
+{
+    return m_neuron_layers.at(kNumLayer).CalculateDerivativeValues();
 }
 
 void NeuralNetwork::SetActivationFunction(const unsigned& kNumLayer, const ActivationFunctionType& kActivationFunction)
@@ -48,7 +53,6 @@ void NeuralNetwork::SetBiases(const unsigned& kNumLayer, const Vector<double> kB
 {
     m_neuron_layers.at(kNumLayer).SetBiases(kBiases);
 }
-
 
 
 Vector<double> NeuralNetwork::GetOutputs()

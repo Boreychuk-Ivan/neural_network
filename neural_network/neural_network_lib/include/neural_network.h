@@ -15,7 +15,7 @@ public:
     void PushInputData(const Vector<double> kInputVector);
     Vector<double> CalculateOutputs();
     void CalculateDerivativeValues();
-    void CalculateDerivativeValuesOnLayer();
+    Vector<double> CalculateDerivativeValuesOnLayer(const unsigned& kNumLayer);
 
     void SetActivationFunction(const unsigned& kNumLayer, const ActivationFunctionType& kActivationFunction);
     void SetSynapticWeigths(const unsigned& kNumLayer, const Matrix<double> kSynapticWeigths);
