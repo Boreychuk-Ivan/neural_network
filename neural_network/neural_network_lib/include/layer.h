@@ -10,7 +10,7 @@ protected:
 private:
     Matrix<double> m_synaptic_weights;
     Matrix<double> m_delta_weights;
-    Vector<double, VTYPE::COL> m_biases;
+    Vector<double> m_biases;
 public:
     Layer() = delete;
     Layer(const unsigned& inputs_number, const unsigned& neurons_number,
@@ -32,7 +32,7 @@ public:
     unsigned GetNeuronsNumber();
     Vector<double> GetLocalField();
     Vector<double> GetActivatedValues();
-    Vector<double> DerivativeValues();
+    Vector<double> GetDerivativeValues();
 
     void Display();
     void DisplayNeurons();

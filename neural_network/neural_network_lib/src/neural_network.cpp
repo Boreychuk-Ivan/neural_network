@@ -16,7 +16,7 @@ void NeuralNetwork::PushInputData(const Vector<double> kInputVector)
     m_neuron_layers.at(0).CalculateLocalFields(kInputVector);
 }
 
-void NeuralNetwork::CalculateOutputs()
+Vector<double> NeuralNetwork::CalculateOutputs()
 {
     for (size_t layer_it = 0; layer_it < m_neuron_layers.size()-1; ++layer_it)
     {
@@ -25,7 +25,13 @@ void NeuralNetwork::CalculateOutputs()
         m_neuron_layers.at(layer_it+1).CalculateLocalFields(input_next_layer);
     }
     m_neuron_layers.back().CalculateActivatedValues();
+    return GetOutputs();
+}
 
+void NeuralNetwork::CalculateDerivativeValues()
+{
+    for (auto& layer : m_neuron_layers)
+        layer.CalculateDerivativeValues();
 }
 
 void NeuralNetwork::SetActivationFunction(const unsigned& kNumLayer, const ActivationFunctionType& kActivationFunction)
@@ -48,6 +54,11 @@ void NeuralNetwork::SetBiases(const unsigned& kNumLayer, const Vector<double> kB
 Vector<double> NeuralNetwork::GetOutputs()
 {
     return m_neuron_layers.back().GetActivatedValues();
+}
+
+Vector<double> NeuralNetwork::GetDerivativeValues(const unsigned& kNumLayer)
+{
+    return m_neuron_layers.at(kNumLayer).GetDerivativeValues();
 }
 
 void NeuralNetwork::DisplayArchitecture()

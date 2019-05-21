@@ -2,7 +2,7 @@
 
 Neuron::Neuron(double activated_value, ActivationFunctionType type)
     : m_activation_function_type(type), m_activation_function(nullptr), m_derivative_function(nullptr),
-      m_local_field(0), m_activated_value(activated_value), m_deriative_value(0),
+      m_local_field(0), m_activated_value(activated_value), m_derivative_value(0),
       m_local_gradient(0)
 {
     SetActivationFunction(type);
@@ -15,7 +15,7 @@ void Neuron::CalculateActivatedValue()
 
 void Neuron::CalculateDerivativeValue()
 {
-    m_deriative_value = m_derivative_function(m_activated_value);
+    m_derivative_value = m_derivative_function(m_activated_value);
 }
 
 
@@ -25,7 +25,7 @@ void Neuron::Display()
     std::cout << "Activation function: " << Functions::Disp(m_activation_function_type) << std::endl;
     std::cout << "Local field:" << m_local_field << std::endl;
     std::cout << "Activation value:" << m_activated_value << std::endl;
-    std::cout << "Deriative value: " << m_deriative_value << std::endl;
+    std::cout << "Deriative value: " << m_derivative_value << std::endl;
     std::cout << "Local gradient:" << m_local_gradient << std::endl;
     std::cout << std::endl << std::endl;
 }
