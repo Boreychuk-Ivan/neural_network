@@ -17,13 +17,19 @@ public:
     void CalculateDerivativeValues();
     Vector<double> CalculateDerivativeValuesOnLayer(const unsigned& kNumLayer);
 
+    //Setters
     void SetActivationFunction(const unsigned& kNumLayer, const ActivationFunctionType& kActivationFunction);
     void SetSynapticWeigths(const unsigned& kNumLayer, const Matrix<double> kSynapticWeigths);
     void SetBiases(const unsigned& kNumLayer, const Vector<double> kBiases);
 
+    //Getters
     Vector<double> GetOutputs();
-    Vector<double> GetDerivativeValues(const unsigned& kNumLayer);
+    Layer& GetLayer(const unsigned& kNumLayer);
+    size_t GetLayersNumber();
+    size_t GetInputsNumber();
+    size_t GetOutputsNumber();
 
+    //Displays
     void DisplayArchitecture();
     void DisplayLayers();
     void DisplayNeurons();

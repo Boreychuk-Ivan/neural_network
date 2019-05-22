@@ -7,8 +7,20 @@ class BackPropagation
 {
 private:
     NeuralNetwork m_neural_network;
+    double m_learning_rate;
+    double m_momentum;
 public:
-    Vector<double> CalculateError(const Vector<double>& kOutputValues, const Vector<double>& kTargetValues);
+    BackPropagation() = delete;
+    BackPropagation(
+        const NeuralNetwork& kNeuralNetwork,
+        const double kLearningRate, const double kMomentum) :
+        m_neural_network(kNeuralNetwork), m_learning_rate(kLearningRate),
+        m_momentum(kMomentum) {};
+
+    Vector<double> CalculateError(
+        const Vector<double>& kOutputValues, 
+        const Vector<double>& kTargetValues
+    );
     
     Vector<double> CalculateLocalGradients(
         const Vector<double>& kDerivativeValues, 
@@ -24,5 +36,8 @@ public:
         const Matrix<double>& kLastDeltaWeigths
     );
 
-    void AdjustmentWeight();
+    void AdjustmentWeight(
+        const Vector<double>& kInputData,
+        const Vector<double>& kTargetValues
+    );
 };

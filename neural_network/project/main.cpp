@@ -22,11 +22,6 @@ int main()
     //nn_test.DisplayLayers();
     //nn_test.DisplayNeurons();
 
-    Vector<double> vect1{ 1,2,3,4,5 };
-    Vector<double> vect2{ 1,2,3,4,5 };
-    Vector<double> vector3;
-    vector3 = Vector<double>(vect1 + vect2);
-    std::cout << vector3;
-
+   
     return 0;
 }

@@ -60,9 +60,24 @@ Vector<double> NeuralNetwork::GetOutputs()
     return m_neuron_layers.back().GetActivatedValues();
 }
 
-Vector<double> NeuralNetwork::GetDerivativeValues(const unsigned& kNumLayer)
+Layer& NeuralNetwork::GetLayer(const unsigned & kNumLayer)
 {
-    return m_neuron_layers.at(kNumLayer).GetDerivativeValues();
+    return m_neuron_layers.at(kNumLayer);
+}
+
+size_t NeuralNetwork::GetLayersNumber()
+{
+    return m_neuron_layers.size();
+}
+
+size_t NeuralNetwork::GetInputsNumber()
+{
+    return m_neuron_layers.at(0).GetNeuronsNumber();
+}
+
+size_t NeuralNetwork::GetOutputsNumber()
+{
+    return m_neuron_layers.back().GetNeuronsNumber();
 }
 
 void NeuralNetwork::DisplayArchitecture()
