@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "matrix_lib.h"
 #include "neural_network.h"
+#include "training.h"
 
 int main()
 {
@@ -21,7 +22,11 @@ int main()
     //nn_test.CalculateOutputs();
     //nn_test.DisplayLayers();
     //nn_test.DisplayNeurons();
+    
+    std::string file_path("../../data/training_set.dt");
+    Training train_object(file_path, 2, 1, 3);
+    std::cout << "Inputs:\n" << train_object.GetInputMatrix();
+    std::cout << "Outputs: \n" << train_object.GetOutputMatrix();
 
-   
     return 0;
 }

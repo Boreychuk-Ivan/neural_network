@@ -13,7 +13,7 @@ Vector<double> BackPropagation::CalculateLocalGradients(
     const Vector<double>& kPreviousLayerError, 
     const Matrix<double>& kSynapticWeights)
 {
-    return Vector<double>(kDerivativeValues.dot(kPreviousLayerError * kSynapticWeights));
+    return Vector<double>(kDerivativeValues.DotMult(kPreviousLayerError * kSynapticWeights));
 }
 
 Matrix<double> BackPropagation::CalculateDeltaWeights(
