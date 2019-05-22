@@ -22,14 +22,11 @@ int main()
     nn_test.CalculateOutputs();
     //nn_test.DisplayLayers();
     //nn_test.DisplayNeurons();
-    
-    std::string file_path("../../data/training_set.dt");
-    Training train_object(file_path, 2, 1, 3);
-    std::cout << "Inputs:\n" << train_object.GetInputMatrix();
-    std::cout << "Outputs: \n" << train_object.GetOutputMatrix();
 
     FileHander fh;
-    fh.WriteNeuralNetworkToFile("../neural_network.dt", nn_test);
-
+    //fh.WriteNeuralNetworkToFile("../neural_network.dt", nn_test);
+    std::ifstream mtx_file("../test_matrix.dt",std::ios::in);
+    std::cout << fh.ReadMatrixFromFile(&mtx_file, 0, 3,3);
+    
     return 0;
 }

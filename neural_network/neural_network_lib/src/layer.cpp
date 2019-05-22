@@ -38,10 +38,11 @@ Vector<double> Layer::CalculateLocalFields(Vector<double> input_vector)
 {
     unsigned inputs_number = m_synaptic_weights.GetColsNum();
     assert(input_vector.GetSize() == inputs_number);
-    if (input_vector.IsRow()) input_vector = !input_vector; //Transpose
+    if (input_vector.IsRow())
+        input_vector = !input_vector; //Transpose
     unsigned neurons_number = m_neurons.size();
     Vector<double> local_field(neurons_number);
-    local_field = (m_synaptic_weights * input_vector + m_biases);
+    local_field = (m_synaptic_weights * input_vector + !m_biases);
     return local_field;
 }
 
@@ -108,7 +109,7 @@ size_t Layer::GetNeuronsNumber() const
 
 size_t Layer::GetInputsNumber() const
 {
-    return m_delta_weights.GetNumCols();
+    return m_delta_weights.GetColsNum();
 }
 
 Vector<double> Layer::GetLocalField() const
