@@ -14,6 +14,7 @@ protected:
 	std::vector<T> m_matrix;
 
 public:
+    //Constructors
 	Matrix() : m_rows(0), m_cols(0){};
 	Matrix(const size_t rows, const size_t cols);
 	Matrix(const size_t rows, const size_t cols, T *mtx);
@@ -24,30 +25,30 @@ public:
 	Matrix &operator=(const std::initializer_list<T> &list);
 	Matrix &operator=(const T *);
 
-	T &at(size_t cell)
-	{
-		assert(cell < m_rows * m_cols);
-		return m_matrix.at(cell);
-	};
+	T &at(size_t cell) {assert(cell < m_rows * m_cols);	return m_matrix.at(cell);}
 	T &at(size_t row, size_t col) { return m_matrix.at(row * m_cols + col); };
 
-	T at(size_t cell) const
-	{
-		assert(cell < m_rows * m_cols);
-		return m_matrix.at(cell);
-	};
-	T at(size_t row, size_t col) const { return m_matrix.at(row * m_cols + col); };
+	T at(size_t cell) const{assert(cell < m_rows * m_cols); return m_matrix.at(cell);}
+	T at(size_t row, size_t col) const { return m_matrix.at(row * m_cols + col); }
 
+    //Getters
 	std::vector<T> GetVector() const;
 	Matrix GetRow(const size_t row) const;
-	Matrix GetCol(const size_t col) const;
-
+    Matrix GetCol(const size_t col) const;
 	size_t GetSize() const { return m_rows * m_cols; }
 	size_t GetNumRows() const { return m_rows; }
 	size_t GetNumCols() const { return m_cols; }
 
+    //Methods
 	bool IsEqualSize(const Matrix kOther) const;
+    T SumElements();
+    Matrix<T> dot(const Matrix<T> &kRightMtx) const;
 
+    //Creators
+    void InitialiseDiag(const size_t& kSize);
+
+
+    //Operators
 	template <class Tf>
 	friend Matrix<Tf> operator+(const Matrix<Tf> &kLeftMtx, const Matrix<Tf> &kRightMtx);
 
@@ -74,16 +75,11 @@ public:
 	template <class Tf>
 	friend Matrix<Tf> operator*(const Tf &num, const Matrix<Tf> &kRightMtx);
 
-	Matrix<T> dot(const Matrix<T> &kRightMtx) const;
-
 	template <class Tf>
 	friend Matrix<Tf> operator!(const Matrix<Tf> &kRightMtx); //Transpose
 
 	template <class Tf>
 	friend std::ostream &operator<<(std::ostream &out, const Matrix<Tf> &kRightMtx);
-
-	template <class Tf>
-	friend Tf SumElements(const Matrix<Tf> &kMatrix);
 };
 
 template <class T>
@@ -193,15 +189,34 @@ inline bool Matrix<T>::IsEqualSize(const Matrix kOther) const
 		return false;
 }
 
+template<class T>
+inline T Matrix<T>::SumElements()
+{
+    T accumulator = 0;
+    for (int it = 0; it < kMatrix.GetSize(); ++it)
+        accumulator += kMatrix.at(it);
+    return accumulator;
+}
+
 template <class T>
 inline Matrix<T> Matrix<T>::dot(const Matrix<T> &kRightMtx) const
 {
 	assert(m_cols == kRightMtx.m_cols && m_rows == kRightMtx.m_rows);
+    Matrix<T> result_mtx(*this);
 	for (int it = 0; it < m_matrix.size(); ++it)
 	{
-		m_matrix.at(it) *= kRightMtx.at(it);
+		result_mtx.at(it) *= kRightMtx.at(it);
 	}
-	return *this;
+	return result_mtx;
+}
+
+template<class T>
+void Matrix<T>::InitialiseDiag(const size_t & kSize)
+{
+    Matrix<T> diag_mtx(kSize, kSize);
+    for(int it = 0; it < kSize; ++it)
+        diag_mtx.at(it*kSize+it) = 1;
+    *this = diag_mtx;
 }
 
 template <class T>
@@ -385,16 +400,6 @@ inline std::ostream &operator<<(std::ostream &out, const Matrix<uint8_t> &kRight
 	return out;
 }
 
-template <class Tf>
-Tf SumElements(const Matrix<Tf> &kMatrix)
-{
-	Tf accumulator(0);
-	for (int element = 0; element < kMatrix.GetSize(); ++element)
-	{
-		accumulator += kMatrix.at(element);
-	}
-	return accumulator;
-}
 
 //Class Vector
 namespace VTYPE
