@@ -23,11 +23,11 @@ public:
     void SetBiases(const unsigned& kNumLayer, const Vector<double> kBiases);
 
     //Getters
-    Vector<double> GetOutputs();
-    Layer& GetLayer(const unsigned& kNumLayer);
-    size_t GetLayersNumber();
-    size_t GetInputsNumber();
-    size_t GetOutputsNumber();
+    Vector<double> GetOutputs() const;
+    Layer  GetLayer(const unsigned& kNumLayer) const;
+    size_t GetLayersNumber() const;
+    size_t GetInputsNumber() const;
+    size_t GetOutputsNumber() const;
 
     //Displays
     void DisplayArchitecture();

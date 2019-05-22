@@ -101,12 +101,17 @@ void Layer::SetBiases(const Vector<double> kBiases)
         m_biases.at(it) = kBiases.at(it);
 }
 
-unsigned Layer::GetNeuronsNumber()
+size_t Layer::GetNeuronsNumber() const
 {
     return m_neurons.size();
 }
 
-Vector<double> Layer::GetLocalField()
+size_t Layer::GetInputsNumber() const
+{
+    return m_delta_weights.GetNumCols();
+}
+
+Vector<double> Layer::GetLocalField() const
 {
     Vector<double> local_fields(m_neurons.size());
     for (int neuron_it = 0; neuron_it < m_neurons.size(); ++neuron_it)
@@ -114,7 +119,7 @@ Vector<double> Layer::GetLocalField()
     return local_fields;
 }
 
-Vector<double> Layer::GetActivatedValues()
+Vector<double> Layer::GetActivatedValues() const
 {
     Vector<double> activated_values(m_neurons.size());
     for(int neuron_it = 0; neuron_it < m_neurons.size(); ++neuron_it)
@@ -122,7 +127,7 @@ Vector<double> Layer::GetActivatedValues()
     return activated_values;
 }
 
-Vector<double> Layer::GetDerivativeValues()
+Vector<double> Layer::GetDerivativeValues() const
 {
     Vector<double> derivative_values(m_neurons.size());
     for (int neuron_it = 0; neuron_it < m_neurons.size(); ++neuron_it)
@@ -130,14 +135,19 @@ Vector<double> Layer::GetDerivativeValues()
     return derivative_values;
 }
 
-Matrix<double> Layer::GetSynapticWeights()
+Matrix<double> Layer::GetSynapticWeights() const
 {
     return m_synaptic_weights;
 }
 
-Matrix<double> Layer::GetDeltaWeigths()
+Matrix<double> Layer::GetDeltaWeigths() const
 {
     return m_delta_weights;
+}
+
+Vector<double> Layer::GetBiases() const
+{
+    return m_biases;
 }
 
 void Layer::Display()

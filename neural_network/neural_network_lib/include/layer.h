@@ -31,12 +31,14 @@ public:
     void SetDeltaWeigths(const Matrix<double>& kDeltaWeights);
     void SetBiases(const Vector<double> kBiases);
 
-    unsigned GetNeuronsNumber();
-    Vector<double> GetLocalField();
-    Vector<double> GetActivatedValues();
-    Vector<double> GetDerivativeValues();
-    Matrix<double> GetSynapticWeights();
-    Matrix<double> GetDeltaWeigths();
+    size_t GetNeuronsNumber() const;
+    size_t GetInputsNumber() const;
+    Vector<double> GetLocalField() const;
+    Vector<double> GetActivatedValues() const;
+    Vector<double> GetDerivativeValues() const;
+    Matrix<double> GetSynapticWeights() const;
+    Matrix<double> GetDeltaWeigths() const;
+    Vector<double> GetBiases() const;
 
     void Display();
     void DisplayNeurons();

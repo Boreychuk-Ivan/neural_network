@@ -55,27 +55,27 @@ void NeuralNetwork::SetBiases(const unsigned& kNumLayer, const Vector<double> kB
 }
 
 
-Vector<double> NeuralNetwork::GetOutputs()
+Vector<double> NeuralNetwork::GetOutputs() const
 {
     return m_neuron_layers.back().GetActivatedValues();
 }
 
-Layer& NeuralNetwork::GetLayer(const unsigned & kNumLayer)
+Layer NeuralNetwork::GetLayer(const unsigned & kNumLayer) const
 {
     return m_neuron_layers.at(kNumLayer);
 }
 
-size_t NeuralNetwork::GetLayersNumber()
+size_t NeuralNetwork::GetLayersNumber() const
 {
     return m_neuron_layers.size();
 }
 
-size_t NeuralNetwork::GetInputsNumber()
+size_t NeuralNetwork::GetInputsNumber() const
 {
     return m_neuron_layers.at(0).GetNeuronsNumber();
 }
 
-size_t NeuralNetwork::GetOutputsNumber()
+size_t NeuralNetwork::GetOutputsNumber() const
 {
     return m_neuron_layers.back().GetNeuronsNumber();
 }
