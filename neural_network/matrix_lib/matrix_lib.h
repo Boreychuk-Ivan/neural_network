@@ -25,8 +25,9 @@ public:
 	Matrix &operator=(const std::initializer_list<T> &list);
 	Matrix &operator=(const T *);
 
+    //Element callers
 	T &at(size_t cell) {assert(cell < m_rows * m_cols);	return m_matrix.at(cell);}
-	T &at(size_t row, size_t col) { return m_matrix.at(row * m_cols + col); };
+	T &at(size_t row, size_t col){ return m_matrix.at(row * m_cols + col);}
 
 	T at(size_t cell) const{assert(cell < m_rows * m_cols); return m_matrix.at(cell);}
 	T at(size_t row, size_t col) const { return m_matrix.at(row * m_cols + col); }
@@ -36,13 +37,15 @@ public:
 	Matrix GetRow(const size_t row) const;
     Matrix GetCol(const size_t col) const;
 	size_t GetSize() const { return m_rows * m_cols; }
-	size_t GetNumRows() const { return m_rows; }
-	size_t GetNumCols() const { return m_cols; }
+	size_t GetRowsNum() const { return m_rows; }
+	size_t GetColsNum() const { return m_cols; }
+    Matrix<T> GetMtx(const size_t kRowBeg, const size_t kColBeg, const size_t kRowEnd, const size_t kColEnd);
 
     //Methods
 	bool IsEqualSize(const Matrix kOther) const;
     T SumElements();
-    Matrix<T> dot(const Matrix<T> &kRightMtx) const;
+    Matrix<T> DotMult(const Matrix<T> &kRightMtx) const;
+    
 
     //Creators
     void InitialiseDiag(const size_t& kSize);
@@ -180,6 +183,22 @@ Matrix<T> Matrix<T>::GetCol(const size_t kCol) const
 	return col_vector;
 }
 
+template<class T>
+Matrix<T> Matrix<T>::GetMtx(const size_t kRowBeg, const size_t kColBeg, const size_t kRowEnd, const size_t kColEnd)
+{
+    assert(kRowBeg <= kRowEnd);
+    assert(kColBeg <= kColEnd);
+    Matrix<T> part_mtx(kRowEnd - kRowBeg + 1, kColEnd - kColBeg + 1);
+    for(size_t row_it = 0; row_it <= kRowEnd - kRowBeg; ++row_it)
+    {
+        for(size_t col_it = 0; col_it <= kColEnd - kColBeg; ++col_it)
+        {
+            part_mtx.at(row_it, col_it) = this->at(row_it+ kRowBeg, col_it + kColBeg);
+        }
+    }
+    return part_mtx;
+}
+
 template <class T>
 inline bool Matrix<T>::IsEqualSize(const Matrix kOther) const
 {
@@ -199,7 +218,7 @@ inline T Matrix<T>::SumElements()
 }
 
 template <class T>
-inline Matrix<T> Matrix<T>::dot(const Matrix<T> &kRightMtx) const
+inline Matrix<T> Matrix<T>::DotMult(const Matrix<T> &kRightMtx) const
 {
 	assert(m_cols == kRightMtx.m_cols && m_rows == kRightMtx.m_rows);
     Matrix<T> result_mtx(*this);
@@ -374,9 +393,9 @@ template <class T>
 std::ostream &operator<<(std::ostream &out, const Matrix<T> &kRightMtx)
 {
 	out << std::endl;
-	for (int row(0); row < kRightMtx.GetNumRows(); ++row)
+	for (int row(0); row < kRightMtx.GetRowsNum(); ++row)
 	{
-		for (int col(0); col < kRightMtx.GetNumCols(); ++col)
+		for (int col(0); col < kRightMtx.GetColsNum(); ++col)
 		{
 			out << (kRightMtx.at(row, col) >= 0 ? " " : "") << kRightMtx.at(row, col) << "\t";
 		}
@@ -389,9 +408,9 @@ template <>
 inline std::ostream &operator<<(std::ostream &out, const Matrix<uint8_t> &kRightMtx)
 {
 	out << std::endl;
-	for (int row(0); row < kRightMtx.GetNumRows(); ++row)
+	for (int row(0); row < kRightMtx.GetRowsNum(); ++row)
 	{
-		for (int col(0); col < kRightMtx.GetNumCols(); ++col)
+		for (int col(0); col < kRightMtx.GetColsNum(); ++col)
 		{
 			out << (kRightMtx.at(row, col) >= 0 ? " " : "") << static_cast<unsigned int>(kRightMtx.at(row, col)) << "\t";
 		}
@@ -443,9 +462,9 @@ public:
 
 	Vector(const Matrix<T> &kMtx)
 	{
-		assert(kMtx.GetNumCols() == 1 || kMtx.GetNumRows() == 1);
-		m_cols = kMtx.GetNumCols();
-		m_rows = kMtx.GetNumRows();
+		assert(kMtx.GetColsNum() == 1 || kMtx.GetRowsNum() == 1);
+		m_cols = kMtx.GetColsNum();
+		m_rows = kMtx.GetRowsNum();
 		m_matrix = kMtx.GetVector();
 	}
 
