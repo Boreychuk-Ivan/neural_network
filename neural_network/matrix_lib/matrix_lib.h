@@ -19,6 +19,7 @@ public:
 	Matrix() : m_rows(0), m_cols(0){};
 	Matrix(const size_t rows, const size_t cols);
 	Matrix(const size_t rows, const size_t cols, T *mtx);
+    Matrix(const size_t rows, const size_t cols, std::vector<T> mtx);
 	Matrix(const std::initializer_list<T> &list);
 
 	Matrix(const Matrix &mtx);
@@ -106,6 +107,16 @@ Matrix<T>::Matrix(const size_t rows, const size_t cols, T *mtx) : m_rows(rows), 
 	{
 		m_matrix.push_back(*(mtx + it));
 	}
+}
+
+template<class T>
+Matrix<T>::Matrix(const size_t rows, const size_t cols, std::vector<T> mtx)
+{
+    m_matrix.reserve(rows * cols);
+    assert(mtx.size() == rows * cols);
+    m_rows = rows;
+    m_cols = cols;
+    m_matrix = mtx;
 }
 
 template <class T>
