@@ -4,7 +4,8 @@
 #include <iostream>
 #include <initializer_list>
 #include <assert.h>
-#include <cmath> //fmod
+#include <cmath>  //fmod
+#include <limits> //numeric_limits
 
 template <class T>
 class Matrix
@@ -44,6 +45,10 @@ public:
     //Methods
 	bool IsEqualSize(const Matrix kOther) const;
     T SumElements();
+    T MaxElement() const;
+    T MinElement() const;
+
+    //Arithmetic
     Matrix<T> DotMult(const Matrix<T> &kRightMtx) const;
     
 
@@ -162,7 +167,7 @@ Matrix<T> &Matrix<T>::operator=(const T *input_arr)
 template <class T>
 Matrix<T> Matrix<T>::GetRow(const size_t kRow) const
 {
-	assert(kRow < m_rows);
+	assert(kRow <= m_rows);
 	Matrix<T> row_vector(1, m_cols);
 	for (int col = 0; col < m_cols; ++col)
 	{
@@ -174,7 +179,7 @@ Matrix<T> Matrix<T>::GetRow(const size_t kRow) const
 template <class T>
 Matrix<T> Matrix<T>::GetCol(const size_t kCol) const
 {
-	assert(kCol < m_cols);
+	assert(kCol <= m_cols);
 	Matrix<T> col_vector(m_rows, 1);
 	for (int row = 0; row < m_rows; ++row)
 	{
@@ -215,6 +220,34 @@ inline T Matrix<T>::SumElements()
     for (int it = 0; it < kMatrix.GetSize(); ++it)
         accumulator += kMatrix.at(it);
     return accumulator;
+}
+
+template<class T>
+T Matrix<T>::MaxElement() const
+{
+    T max_element = std::numeric_limits<T>::min();
+    for (int it = 0; it < m_matrix.size(); ++it)
+    {
+        if (max_element < m_matrix.at(it))
+        {
+            max_element = m_matrix.at(it);
+        }
+    }
+    return max_element;
+}
+
+template<class T>
+T Matrix<T>::MinElement() const
+{
+    T min_element = std::numeric_limits<T>::max();
+    for (int it = 0; it < m_matrix.size(); ++it)
+    {
+        if (min_element > m_matrix.at(it))
+        {
+            min_element = m_matrix.at(it);
+        }
+    }
+    return min_element;
 }
 
 template <class T>
