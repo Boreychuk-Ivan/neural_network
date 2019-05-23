@@ -2,7 +2,7 @@
 
 Layer::Layer(const unsigned& inputs_number, const unsigned& neurons_number, const ActivationFunctionType& activation_function) :
     m_neurons(neurons_number, Neuron(0, activation_function)), m_synaptic_weights(neurons_number, inputs_number),
-    m_delta_weights(neurons_number, inputs_number), m_biases(neurons_number)
+    m_delta_weights(neurons_number, inputs_number), m_biases(neurons_number), m_delta_biases(neurons_number)
 {
     InitializeRandomWeights(-2,2);      //Liniar part of sigmoid function
     InitializeRandomBiases(-2, 2);
@@ -28,10 +28,16 @@ void Layer::InitializeRandomBiases(const double& min_value, const double& max_va
     }
 }
 
-void Layer::AdjustmentWeight(const Vector<double> kDeltaWeights)
+void Layer::AdjustmentWeights(const Matrix<double> kDeltaWeights)
 {
     SetDeltaWeigths(kDeltaWeights);
     m_synaptic_weights = m_synaptic_weights + kDeltaWeights;
+}
+
+void Layer::AdjustmentBiases(const Vector<double> kDeltaBiases)
+{
+    SetDeltaBiases(kDeltaBiases);
+    m_biases = m_biases + kDeltaBiases;
 }
 
 Vector<double> Layer::CalculateLocalFields(Vector<double> input_vector)
@@ -102,6 +108,11 @@ void Layer::SetBiases(const Vector<double> kBiases)
         m_biases.at(it) = kBiases.at(it);
 }
 
+void Layer::SetDeltaBiases(const Vector<double> kDeltaBiases)
+{
+    m_delta_biases = kDeltaBiases;
+}
+
 size_t Layer::GetNeuronsNumber() const
 {
     return m_neurons.size();
@@ -162,7 +173,7 @@ void Layer::Display()
     std::cout << "Neurons number: " << m_neurons.size() << "\n";
     std::cout << "Number of inputs: " << m_synaptic_weights.GetColsNum() << "\n";
     std::cout << "Activation function:" <<
-        Functions::GetString(m_neurons.at(1).GetActivationFunctionType()) << "\n";
+        Functions::GetString(m_neurons.at(0).GetActivationFunctionType()) << "\n";
     std::cout << "Biases : " << m_biases << "\n";
     std::cout << "Synaptic weights" << m_synaptic_weights << "\n";
     std::cout << "Delta weights" << m_delta_weights << "\n";

@@ -65,6 +65,11 @@ Layer NeuralNetwork::GetLayer(const unsigned & kNumLayer) const
     return m_neuron_layers.at(kNumLayer);
 }
 
+Layer& NeuralNetwork::GetLayer(const unsigned& kNumLayer)
+{
+    return m_neuron_layers.at(kNumLayer);
+}
+
 size_t NeuralNetwork::GetLayersNumber() const
 {
     return m_neuron_layers.size();

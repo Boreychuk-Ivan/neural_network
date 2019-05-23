@@ -38,5 +38,5 @@ public:
     //Methods
     void ReadFile();
     void TrainOnSet();
-    void TrainNeuralNetwork();
+    void TrainNeuralNetwork(const size_t& kEpochNumber);
 };

@@ -9,26 +9,31 @@ private:
     NeuralNetwork m_neural_network;
     double m_learning_rate;
     double m_momentum;
+    Vector<double> m_error;
+
 public:
     BackPropagation() = delete;
     BackPropagation(
         const NeuralNetwork& kNeuralNetwork,
         const double kLearningRate, const double kMomentum) :
         m_neural_network(kNeuralNetwork), m_learning_rate(kLearningRate),
-        m_momentum(kMomentum) {};
+        m_momentum(kMomentum), m_error(){};
 
-    Vector<double> CalculateError(
+    Vector<double> CalculateError
+    (
         const Vector<double>& kOutputValues, 
         const Vector<double>& kTargetValues
     );
     
-    Vector<double> CalculateLocalGradients(
+    Vector<double> CalculateLocalGradients
+    (
         const Vector<double>& kDerivativeValues, 
         const Vector<double>& kPreviousLayerError, 
         const Matrix<double>& kSynapticWeights
     );
 
-    Matrix<double> CalculateDeltaWeights(
+    Matrix<double> CalculateDeltaWeights
+    (
         const double& kLearningRate, 
         const double& kMomentum,
         const Vector<double>& kLocalGradients, 
@@ -36,8 +41,20 @@ public:
         const Matrix<double>& kLastDeltaWeigths
     );
 
-    void AdjustmentWeight(
+    Vector<double> CalculateDeltaBiases
+    (
+        const double& kLearningRate,
+        const double& kMomentum,
+        const Vector<double>& kLocalGradients,
+        const Vector<double>& kLastDeltaBiases
+    );
+
+    void AdjustmentNeuralNetwork(
         const Vector<double>& kInputData,
         const Vector<double>& kTargetValues
     );
+
+    Vector<double> GetError();
+
+    NeuralNetwork GetNeuralNetwork() const;
 };

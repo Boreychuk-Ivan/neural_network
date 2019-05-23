@@ -24,7 +24,9 @@ public:
 
     //Getters
     Vector<double> GetOutputs() const;
-    Layer  GetLayer(const unsigned& kNumLayer) const;
+    Layer GetLayer(const unsigned& kNumLayer) const;
+    Layer& GetLayer(const unsigned& kNumLayer);
+
     size_t GetLayersNumber() const;
     size_t GetInputsNumber() const;
     size_t GetOutputsNumber() const;

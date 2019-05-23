@@ -11,6 +11,7 @@ private:
     Matrix<double> m_synaptic_weights;
     Matrix<double> m_delta_weights;
     Vector<double> m_biases;
+    Vector<double> m_delta_biases;
 public:
     Layer() = delete;
     Layer(const unsigned& inputs_number, const unsigned& neurons_number,
@@ -19,7 +20,8 @@ public:
     void InitializeRandomWeights(const double& min_value, const double& max_value);
     void InitializeRandomBiases(const double& min_value, const double& max_value);
     
-    void AdjustmentWeight(const Vector<double> kDeltaWeights);
+    void AdjustmentWeights(const Matrix<double> kDeltaWeights);
+    void AdjustmentBiases(const Vector<double> kDeltaBiases);
     Vector<double> CalculateLocalFields(Vector<double> input_vector);
     Vector<double> CalculateActivatedValues();
     Vector<double> CalculateDerivativeValues();
@@ -30,6 +32,7 @@ public:
     void SetSynapticWeights(const Matrix<double> kSynapticWeigths);
     void SetDeltaWeigths(const Matrix<double>& kDeltaWeights);
     void SetBiases(const Vector<double> kBiases);
+    void SetDeltaBiases(const Vector<double> kDeltaBiases);
 
     size_t GetNeuronsNumber() const;
     size_t GetInputsNumber() const;

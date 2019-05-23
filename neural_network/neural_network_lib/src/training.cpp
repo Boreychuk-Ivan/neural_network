@@ -51,7 +51,7 @@ void Training::ReadFile()
             m_training_file.get();
         }
     }
-    m_input_matrix = read_matrix.GetMtx(0, 0, read_matrix.GetColsNum()-1, m_inputs_number-1);
+    m_input_matrix = read_matrix.GetMtx(0, 0, read_matrix.GetRowsNum()-1, m_inputs_number - 1);
     m_output_matrix = read_matrix.GetMtx(0, m_inputs_number, read_matrix.GetRowsNum()-1, read_matrix.GetColsNum()-1);
 }
 
@@ -61,12 +61,19 @@ void Training::TrainOnSet()
     {
         Vector<double> input_data = m_input_matrix.GetRow(it);
         Vector<double> target_values = m_output_matrix.GetRow(it);
-        m_neural_network.AdjustmentWeight(input_data, target_values);
+
+        m_neural_network.AdjustmentNeuralNetwork(input_data, target_values);
+        std::cout << " error: " << m_neural_network.GetError() << std::endl;
     }
 }
 
-void Training::TrainNeuralNetwork()
+void Training::TrainNeuralNetwork(const size_t& kEpochNumber)
 {
-
-
+    for (int it = 0; it < kEpochNumber; ++it)
+    {
+        std::cout << "Epoch #" << it << std::endl;
+        TrainOnSet();
+        //m_neural_network.GetNeuralNetwork().DisplayLayers();
+        //m_neural_network.GetNeuralNetwork().DisplayNeurons();
+    }
 }
