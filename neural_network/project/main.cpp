@@ -24,9 +24,14 @@ int main()
     //nn_test.DisplayNeurons();
 
     FileHander fh;
-    //fh.WriteNeuralNetworkToFile("../neural_network.dt", nn_test);
-    std::ifstream mtx_file("../test_matrix.dt",std::ios::in);
-    std::cout << fh.ReadMatrixFromFile(&mtx_file, 0, 3,3);
+    fh.WriteNeuralNetworkToFile("../neural_network.dt", nn_test);
+
+    NeuralNetwork read_nn = fh.ReadNeuralNetworkFromFile("../neural_network.dt");
+    read_nn.DisplayArchitecture();
+    read_nn.DisplayLayers();
+
+    //std::ifstream mtx_file("../test_matrix.dt", std::ios::in);
+    //std::cout << fh.ReadMatrixFromFile(&mtx_file, 0, 3,3);
     
     return 0;
 }
