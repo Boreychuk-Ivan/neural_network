@@ -151,13 +151,18 @@ Vector<double> Layer::GetBiases() const
     return m_biases;
 }
 
+ActivationFunctionType Layer::GetActivationFunctionType() const
+{
+    return m_neurons.at(0).GetActivationFunctionType();
+}
+
 void Layer::Display()
 {
     std::cout << "Layer parametrs:\n";
     std::cout << "Neurons number: " << m_neurons.size() << "\n";
-    std::cout << "Activation function:" << 
-        Functions::Disp(m_neurons.at(1).GetActivationFunctionType()) << "\n";
     std::cout << "Number of inputs: " << m_synaptic_weights.GetColsNum() << "\n";
+    std::cout << "Activation function:" <<
+        Functions::GetString(m_neurons.at(1).GetActivationFunctionType()) << "\n";
     std::cout << "Biases : " << m_biases << "\n";
     std::cout << "Synaptic weights" << m_synaptic_weights << "\n";
     std::cout << "Delta weights" << m_delta_weights << "\n";

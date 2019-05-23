@@ -22,7 +22,7 @@ void Neuron::CalculateDerivativeValue()
 void Neuron::Display()
 {
     std::cout << "Neuron parametrs:\n";
-    std::cout << "Activation function: " << Functions::Disp(m_activation_function_type) << std::endl;
+    std::cout << "Activation function: " << Functions::GetString(m_activation_function_type) << std::endl;
     std::cout << "Local field:" << m_local_field << std::endl;
     std::cout << "Activation value:" << m_activated_value << std::endl;
     std::cout << "Deriative value: " << m_derivative_value << std::endl;
@@ -67,17 +67,17 @@ void Neuron::SetActivatedValue(const double& kActivatedValue)
     m_activated_value = kActivatedValue;
 }
 
-std::string Functions::Disp(ActivationFunctionType type)
+std::string Functions::GetString(ActivationFunctionType type)
 {
     if (type == TANH)
     {
         return std::string("TANH");
     }
-    if (type == SIGMOID)
+    else if (type == SIGMOID)
     {
         return std::string("SIGMOID");
     }
-    if (type == LINEAR)
+    else if (type == LINEAR)
     {
         return std::string("LINEAR");
     }
@@ -85,5 +85,25 @@ std::string Functions::Disp(ActivationFunctionType type)
     {
         return std::string("Warrning! Invalid activation function\n");
     }
-    
+}
+
+ActivationFunctionType Functions::Type(const std::string& kType)
+{
+    if (kType == "TANH")
+    {
+        return TANH;
+    }
+    else if (kType == "SIGMOID")
+    {
+        return SIGMOID;
+    }
+    else if (kType == "LINEAR")
+    {
+        return LINEAR;
+    }
+    else
+    {
+        std::cout << "Error! Invalid activation function\n";
+        exit(1);
+    }
 }

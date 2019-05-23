@@ -22,5 +22,6 @@ public:
     static double dsigmoid(double x) { return (x * (1 - x)); }
     static double dlinear(double x) { return 1; }
 
-    static std::string Disp(ActivationFunctionType);
+    static std::string GetString(ActivationFunctionType);
+    static ActivationFunctionType Type(const std::string& kType);
 };

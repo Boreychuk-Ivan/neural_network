@@ -39,6 +39,7 @@ public:
     Matrix<double> GetSynapticWeights() const;
     Matrix<double> GetDeltaWeigths() const;
     Vector<double> GetBiases() const;
+    ActivationFunctionType GetActivationFunctionType() const;
 
     void Display();
     void DisplayNeurons();
