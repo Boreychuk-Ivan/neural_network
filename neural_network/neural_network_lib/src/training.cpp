@@ -2,7 +2,7 @@
 
 Training::Training
 (
-    const NeuralNetwork& kNeuralNetwork,
+    NeuralNetwork& kNeuralNetwork,
     const double kLearningRate,
     const double kMomentum,
     const std::string& kFilePath, 
@@ -63,7 +63,11 @@ void Training::TrainOnSet()
         Vector<double> target_values = m_output_matrix.GetRow(it);
 
         m_neural_network.AdjustmentNeuralNetwork(input_data, target_values);
-        std::cout << " error: " << m_neural_network.GetError() << std::endl;
+
+        std::cout << "Train set #" << it << "\n";
+        std::cout << "Inputs : " << input_data;
+        std::cout << "Outputs: " << m_neural_network.GetNeuralNetwork().GetOutputs();
+        std::cout << "Target: " << target_values << "\n";
     }
 }
 
@@ -71,7 +75,7 @@ void Training::TrainNeuralNetwork(const size_t& kEpochNumber)
 {
     for (int it = 0; it < kEpochNumber; ++it)
     {
-        std::cout << "Epoch #" << it << std::endl;
+        std::cout << "###### Epoch " << it << " ###### "<<std::endl;
         TrainOnSet();
         //m_neural_network.GetNeuralNetwork().DisplayLayers();
         //m_neural_network.GetNeuralNetwork().DisplayNeurons();

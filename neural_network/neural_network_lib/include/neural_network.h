@@ -12,8 +12,7 @@ public:
     NeuralNetwork() = delete;
     NeuralNetwork(const std::vector<unsigned>& kArchitecture);
     
-    void PushInputData(const Vector<double> kInputVector);
-    Vector<double> CalculateOutputs();
+    Vector<double> CalculateOutputs(const Vector<double> kInputVector);
     void CalculateDerivativeValues();
     Vector<double> CalculateDerivativeValuesOnLayer(const unsigned& kNumLayer);
 

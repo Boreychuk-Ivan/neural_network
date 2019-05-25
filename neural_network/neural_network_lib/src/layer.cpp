@@ -2,10 +2,10 @@
 
 Layer::Layer(const unsigned& inputs_number, const unsigned& neurons_number, const ActivationFunctionType& activation_function) :
     m_neurons(neurons_number, Neuron(0, activation_function)), m_synaptic_weights(neurons_number, inputs_number),
-    m_delta_weights(neurons_number, inputs_number), m_biases(neurons_number), m_delta_biases(neurons_number)
+    m_biases(neurons_number)
 {
-    InitializeRandomWeights(-2,2);      //Liniar part of sigmoid function
-    InitializeRandomBiases(-2, 2);
+    InitializeRandomWeights(-1,1);      //Liniar part of sigmoid function
+    InitializeRandomBiases(-1, 1);
 }
 
 void Layer::InitializeRandomWeights(const double& min_value, const double& max_value)
@@ -30,13 +30,11 @@ void Layer::InitializeRandomBiases(const double& min_value, const double& max_va
 
 void Layer::AdjustmentWeights(const Matrix<double> kDeltaWeights)
 {
-    SetDeltaWeigths(kDeltaWeights);
     m_synaptic_weights = m_synaptic_weights + kDeltaWeights;
 }
 
 void Layer::AdjustmentBiases(const Vector<double> kDeltaBiases)
 {
-    SetDeltaBiases(kDeltaBiases);
     m_biases = m_biases + kDeltaBiases;
 }
 
@@ -49,6 +47,7 @@ Vector<double> Layer::CalculateLocalFields(Vector<double> input_vector)
     unsigned neurons_number = m_neurons.size();
     Vector<double> local_field(neurons_number);
     local_field = (m_synaptic_weights * input_vector + !m_biases);
+    SetLocalField(local_field);
     return local_field;
 }
 
@@ -93,12 +92,6 @@ void Layer::SetSynapticWeights(const Matrix<double> kSynapticWeigths)
     m_synaptic_weights = kSynapticWeigths;
 }
 
-void Layer::SetDeltaWeigths(const Matrix<double>& kDeltaWeights)
-{
-    assert(kDeltaWeights.GetColsNum() == m_delta_weights.GetColsNum());
-    assert(kDeltaWeights.GetRowsNum() == m_delta_weights.GetRowsNum());
-    m_delta_weights = kDeltaWeights;
-}
 
 
 void Layer::SetBiases(const Vector<double> kBiases)
@@ -108,10 +101,6 @@ void Layer::SetBiases(const Vector<double> kBiases)
         m_biases.at(it) = kBiases.at(it);
 }
 
-void Layer::SetDeltaBiases(const Vector<double> kDeltaBiases)
-{
-    m_delta_biases = kDeltaBiases;
-}
 
 size_t Layer::GetNeuronsNumber() const
 {
@@ -120,7 +109,7 @@ size_t Layer::GetNeuronsNumber() const
 
 size_t Layer::GetInputsNumber() const
 {
-    return m_delta_weights.GetColsNum();
+    return m_synaptic_weights.GetColsNum();
 }
 
 Vector<double> Layer::GetLocalField() const
@@ -152,15 +141,12 @@ Matrix<double> Layer::GetSynapticWeights() const
     return m_synaptic_weights;
 }
 
-Matrix<double> Layer::GetDeltaWeigths() const
-{
-    return m_delta_weights;
-}
 
 Vector<double> Layer::GetBiases() const
 {
     return m_biases;
 }
+
 
 ActivationFunctionType Layer::GetActivationFunctionType() const
 {
@@ -176,7 +162,6 @@ void Layer::Display()
         Functions::GetString(m_neurons.at(0).GetActivationFunctionType()) << "\n";
     std::cout << "Biases : " << m_biases << "\n";
     std::cout << "Synaptic weights" << m_synaptic_weights << "\n";
-    std::cout << "Delta weights" << m_delta_weights << "\n";
     std::cout << "\n";
 }
 
@@ -184,7 +169,7 @@ void Layer::DisplayNeurons()
 {
     std::cout << "Layer neurons parametrs:\n";
     std::cout << "lf\tav\tdv\n";
-    std::cout.precision(3);
+    std::cout.precision(5);
     std::fixed;
     for (int it = 0; it < m_neurons.size(); ++it)
     {

@@ -11,19 +11,14 @@ NeuralNetwork::NeuralNetwork(const std::vector<unsigned>& kArchitecture)
     m_neuron_layers.at(layers_number - 2).SetActivationFunction(SIGMOID);  //Output layer
 }
 
-void NeuralNetwork::PushInputData(const Vector<double> kInputVector)
-{
-    Vector<double> local_field =  m_neuron_layers.at(0).CalculateLocalFields(kInputVector);
-    m_neuron_layers.at(0).SetLocalField(local_field);
-}
 
-Vector<double> NeuralNetwork::CalculateOutputs()
+Vector<double> NeuralNetwork::CalculateOutputs(const Vector<double> kInputVector)
 {
+    m_neuron_layers.at(0).CalculateLocalFields(kInputVector);
     for (size_t layer_it = 0; layer_it < m_neuron_layers.size()-1; ++layer_it)
     {
         Vector<double> input_next_layer = m_neuron_layers.at(layer_it).CalculateActivatedValues();
-        Vector<double> local_field = m_neuron_layers.at(layer_it+1).CalculateLocalFields(input_next_layer);
-        m_neuron_layers.at(layer_it + 1).SetLocalField(local_field);
+        m_neuron_layers.at(layer_it+1).CalculateLocalFields(input_next_layer);
     }
     return m_neuron_layers.back().CalculateActivatedValues();
 }

@@ -21,7 +21,7 @@ public:
     Training() = delete;
     Training
     (
-        const NeuralNetwork& kNeuralNetwork, 
+        NeuralNetwork& kNeuralNetwork, 
         const double kLearningRate, 
         const double kMomentum, 
         const std::string& kFilePath, 

@@ -9,9 +9,7 @@ protected:
     std::vector<Neuron> m_neurons;
 private:
     Matrix<double> m_synaptic_weights;
-    Matrix<double> m_delta_weights;
     Vector<double> m_biases;
-    Vector<double> m_delta_biases;
 public:
     Layer() = delete;
     Layer(const unsigned& inputs_number, const unsigned& neurons_number,
@@ -30,9 +28,7 @@ public:
     void SetLocalField(const Vector<double> kLocalFieldVector);
     void SetActivatedValues(const Vector<double> kActivatedValueVector);
     void SetSynapticWeights(const Matrix<double> kSynapticWeigths);
-    void SetDeltaWeigths(const Matrix<double>& kDeltaWeights);
     void SetBiases(const Vector<double> kBiases);
-    void SetDeltaBiases(const Vector<double> kDeltaBiases);
 
     size_t GetNeuronsNumber() const;
     size_t GetInputsNumber() const;
@@ -40,7 +36,6 @@ public:
     Vector<double> GetActivatedValues() const;
     Vector<double> GetDerivativeValues() const;
     Matrix<double> GetSynapticWeights() const;
-    Matrix<double> GetDeltaWeigths() const;
     Vector<double> GetBiases() const;
     ActivationFunctionType GetActivationFunctionType() const;
 
