@@ -81,6 +81,12 @@ NeuralNetwork FileHander::ReadNeuralNetworkFromFile(const std::string & kFilePat
 
 Matrix<double> FileHander::ReadMatrixFromFile(std::ifstream* file, std::streampos pos, const size_t & kRows, const size_t & kCols)
 {
+    if(!file->is_open())
+    {
+        std::cerr << "Error! File was not opened\n";
+        exit(1);
+    }
+
     file->seekg(pos);
     Matrix<double> read_mtx(kRows, kCols);
     size_t row_it = 0;
