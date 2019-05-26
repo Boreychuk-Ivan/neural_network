@@ -24,7 +24,7 @@ void FileHander::WriteNeuralNetworkToFile(const std::string& kFilePath, const Ne
             << current_layer.GetInputsNumber() << ","
             << current_layer.GetNeuronsNumber() << std::endl;
         out << "## Activation function:" << 
-            Functions::GetString(current_layer.GetActivationFunctionType()) << std::endl;
+            ActivationFunctions::GetString(current_layer.GetActivationFunctionType()) << std::endl;
         out << "## Weights:" << current_layer.GetSynapticWeights();
         out << "## Biases:" << !current_layer.GetBiases();
         out << "\n";
@@ -58,7 +58,7 @@ NeuralNetwork FileHander::ReadNeuralNetworkFromFile(const std::string & kFilePat
         std::getline(file, input_line, ':');
         assert(input_line == "## Activation function");
         std::getline(file, input_line, '\n');
-        neureal_network.SetActivationFunction(it, Functions::Type(input_line));
+        neureal_network.SetActivationFunction(it, ActivationFunctions::Type(input_line));
 
         std::getline(file, input_line, ':');
         assert(input_line == "## Weights");

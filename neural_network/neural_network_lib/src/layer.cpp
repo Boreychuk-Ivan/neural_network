@@ -159,7 +159,7 @@ void Layer::Display()
     std::cout << "Neurons number: " << m_neurons.size() << "\n";
     std::cout << "Number of inputs: " << m_synaptic_weights.GetColsNum() << "\n";
     std::cout << "Activation function:" <<
-        Functions::GetString(m_neurons.at(0).GetActivationFunctionType()) << "\n";
+        ActivationFunctions::GetString(m_neurons.at(0).GetActivationFunctionType()) << "\n";
     std::cout << "Biases : " << m_biases << "\n";
     std::cout << "Synaptic weights" << m_synaptic_weights << "\n";
     std::cout << "\n";

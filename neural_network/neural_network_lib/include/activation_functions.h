@@ -11,7 +11,7 @@ enum ActivationFunctionType
 using ActivationFunction = double(*)(double);
 using DerivativeFunction = double(*)(double);
 
-class Functions
+class ActivationFunctions
 {
 public:
     static double tanh(double x) { return std::tanh(x); }

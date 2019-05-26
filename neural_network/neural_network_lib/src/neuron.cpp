@@ -22,7 +22,7 @@ void Neuron::CalculateDerivativeValue()
 void Neuron::Display()
 {
     std::cout << "Neuron parametrs:\n";
-    std::cout << "Activation function: " << Functions::GetString(m_activation_function_type) << std::endl;
+    std::cout << "Activation function: " << ActivationFunctions::GetString(m_activation_function_type) << std::endl;
     std::cout << "Local field:" << m_local_field << std::endl;
     std::cout << "Activation value:" << m_activated_value << std::endl;
     std::cout << "Deriative value: " << m_derivative_value << std::endl;
@@ -35,20 +35,20 @@ void Neuron::SetActivationFunction(ActivationFunctionType type)
     if (type == TANH)
     {
         m_activation_function_type = TANH;
-        m_activation_function = Functions::tanh;
-        m_derivative_function = Functions::dtanh;
+        m_activation_function = ActivationFunctions::tanh;
+        m_derivative_function = ActivationFunctions::dtanh;
     }
     else if (type == SIGMOID)
     {
         m_activation_function_type = SIGMOID;
-        m_activation_function = Functions::sigmoid;
-        m_derivative_function = Functions::dsigmoid;
+        m_activation_function = ActivationFunctions::sigmoid;
+        m_derivative_function = ActivationFunctions::dsigmoid;
     }
     else if (type == LINEAR)
     {
         m_activation_function_type = LINEAR;
-        m_activation_function = Functions::linear;
-        m_derivative_function = Functions::dlinear;
+        m_activation_function = ActivationFunctions::linear;
+        m_derivative_function = ActivationFunctions::dlinear;
     }
     else
     {
@@ -67,7 +67,7 @@ void Neuron::SetActivatedValue(const double& kActivatedValue)
     m_activated_value = kActivatedValue;
 }
 
-std::string Functions::GetString(ActivationFunctionType type)
+std::string ActivationFunctions::GetString(ActivationFunctionType type)
 {
     if (type == TANH)
     {
@@ -87,7 +87,7 @@ std::string Functions::GetString(ActivationFunctionType type)
     }
 }
 
-ActivationFunctionType Functions::Type(const std::string& kType)
+ActivationFunctionType ActivationFunctions::Type(const std::string& kType)
 {
     if (kType == "TANH")
     {
