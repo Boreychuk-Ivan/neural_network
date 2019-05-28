@@ -87,7 +87,7 @@ Matrix<double> FileHander::ReadMatrixFromFile(std::ifstream* file, std::streampo
     size_t col_it = 0;
     while (row_it < kRows)
     {
-        if (isdigit(file->peek()))
+        if (isdigit(file->peek()) || file->peek() == '-')
         {
             double read_value;
             *file >> read_value;
