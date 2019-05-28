@@ -7,7 +7,8 @@ set(SOURCES src/neuron.cpp>
             src/layer.cpp>
             src/back_propagation.cpp>
             src/training.cpp>
-            src/file_handler.cpp
+            src/file_handler.cpp>
+            src/loss_functions.cpp
             )
 
 set(HEADERS include/neuron.h>
@@ -16,7 +17,8 @@ set(HEADERS include/neuron.h>
             include/activation_functions.h>
             include/back_propagation.h>
             include/training.h>
-            include/file_handler.h
+            include/file_handler.h>
+            include/loss_functions.h
             )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
