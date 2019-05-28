@@ -16,16 +16,6 @@ BackPropagation::BackPropagation(NeuralNetwork& kNeuralNetwork, const double kLe
     }
 }
 
-//Vector<double> BackPropagation::CalculateError(
-//    const Vector<double>& kOutputValues, 
-//    const Vector<double>& kTargetValues)
-//{
-//    assert(kOutputValues.IsEqualSize(kTargetValues) && 
-//        "CalculateError : Invalid target values");
-//    m_error = kTargetValues - kOutputValues;
-//    return m_error;
-//}
-
 Vector<double> BackPropagation::CalculateLocalGradients(
     const Vector<double>& kDerivativeValues, 
     const Vector<double>& kPreviousLayerError, 
@@ -72,7 +62,7 @@ void BackPropagation::AdjustmentNeuralNetwork(const Vector<double>& kInputData, 
     
     //Out layer
     derivative_values = m_neural_network.GetLayer(layers_number-1).CalculateDerivativeValues();
-    local_gradients = error * derivative_values;    
+    local_gradients = error.DotMult(derivative_values);    
 
     //Hidden layers
     for (int it = layers_number-1; it > 0; --it)    
