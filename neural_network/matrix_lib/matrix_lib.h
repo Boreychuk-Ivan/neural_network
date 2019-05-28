@@ -45,7 +45,7 @@ public:
 
     //Methods
 	bool IsEqualSize(const Matrix kOther) const;
-    T SumElements();
+    T SumElements() const;
     T MaxElement() const;
     T MinElement() const;
 
@@ -225,11 +225,11 @@ inline bool Matrix<T>::IsEqualSize(const Matrix kOther) const
 }
 
 template<class T>
-inline T Matrix<T>::SumElements()
+inline T Matrix<T>::SumElements() const
 {
     T accumulator = 0;
-    for (int it = 0; it < kMatrix.GetSize(); ++it)
-        accumulator += kMatrix.at(it);
+    for (int it = 0; it < m_cols*m_rows; ++it)
+        accumulator += m_matrix.at(it);
     return accumulator;
 }
 
