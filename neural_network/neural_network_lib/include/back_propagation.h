@@ -5,26 +5,11 @@
 
 class BackPropagation
 {
-private:
-    NeuralNetwork& m_neural_network;
-    double m_learning_rate;
-    double m_momentum;
-    //Vector<double> m_error;
-
-    std::vector<Matrix<double>> m_delta_weights;
-    std::vector<Vector<double>> m_delta_biases;
-
 public:
     BackPropagation() = delete;
     BackPropagation(
         NeuralNetwork& kNeuralNetwork,
         const double kLearningRate, const double kMomentum);
-
-    //Vector<double> CalculateError
-    //(
-    //    const Vector<double>& kOutputValues, 
-    //    const Vector<double>& kTargetValues
-    //);
     
     Vector<double> CalculateLocalGradients
     (
@@ -55,9 +40,16 @@ public:
         const Vector<double>& kTargetValues
     );
 
-    //Getters
-    //Vector<double> GetError();
     NeuralNetwork GetNeuralNetwork() const;
     Matrix<double> GetDeltaWeights(const size_t kLayerNum) const;
     Vector<double> GetDeltaBiases(const size_t kLayerNum) const;
+
+private:
+    NeuralNetwork& m_neural_network;
+    double m_learning_rate;
+    double m_momentum;
+
+    std::vector<Matrix<double>> m_delta_weights;
+    std::vector<Vector<double>> m_delta_biases;
+
 };

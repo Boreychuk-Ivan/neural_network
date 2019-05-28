@@ -5,11 +5,6 @@
 
 class Layer
 {
-protected:
-    std::vector<Neuron> m_neurons;
-private:
-    Matrix<double> m_synaptic_weights;
-    Vector<double> m_biases;
 public:
     Layer() = delete;
     Layer(const unsigned& inputs_number, const unsigned& neurons_number,
@@ -42,4 +37,9 @@ public:
     void Display();
     void DisplayNeurons();
 
+protected:
+    std::vector<Neuron> m_neurons;
+private:
+    Matrix<double> m_synaptic_weights;
+    Vector<double> m_biases;
 };

@@ -6,8 +6,6 @@
 
 class NeuralNetwork
 {
-private:
-    std::vector<Layer> m_neuron_layers;
 public:
     NeuralNetwork() = delete;
     NeuralNetwork(const std::vector<unsigned>& kArchitecture);
@@ -36,5 +34,8 @@ public:
     void DisplayNeurons();
     void DisplayLayerParametrs(const unsigned& kNumLayer);
     void DisplayLayerNeurons(const unsigned& kNumLayer);
+
+private:
+    std::vector<Layer> m_neuron_layers;
 };
 

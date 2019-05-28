@@ -5,15 +5,6 @@
 
 class Neuron
 {
-private:
-    ActivationFunctionType m_activation_function_type;
-    ActivationFunction m_activation_function;
-    DerivativeFunction m_derivative_function;
-    double m_local_field;
-    double m_activated_value;
-    double m_derivative_value;
-    double m_local_gradient;
-
 public:
     Neuron() = delete;
     Neuron(double activated_value, ActivationFunctionType type);
@@ -32,5 +23,15 @@ public:
     auto GetLocalGradient()const { return m_local_gradient;  }
     
     void Display();
+
+private:
+    ActivationFunctionType m_activation_function_type;
+    ActivationFunction m_activation_function;
+    DerivativeFunction m_derivative_function;
+    double m_local_field;
+    double m_activated_value;
+    double m_derivative_value;
+    double m_local_gradient;
+
 };
 
