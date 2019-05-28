@@ -36,12 +36,16 @@ public:
 
     //Getters
 	std::vector<T> GetVector() const;
-	Matrix GetRow(const size_t row) const;
-    Matrix GetCol(const size_t col) const;
+	Matrix GetRow(const size_t) const;
+    Matrix GetCol(const size_t) const;
 	size_t GetSize() const { return m_rows * m_cols; }
 	size_t GetRowsNum() const { return m_rows; }
 	size_t GetColsNum() const { return m_cols; }
     Matrix<T> GetMtx(const size_t kRowBeg, const size_t kColBeg, const size_t kRowEnd, const size_t kColEnd);
+
+    //Setters
+    void SetRow(const size_t kRow, const std::vector<T>& kData);
+    void SetCol(const size_t kCol, const std::vector<T>& kData);
 
     //Methods
 	bool IsEqualSize(const Matrix kOther) const;
@@ -52,10 +56,8 @@ public:
     //Arithmetic
     Matrix<T> DotMult(const Matrix<T> &kRightMtx) const;
     
-
     //Creators
     void InitialiseDiag(const size_t& kSize);
-
 
     //Operators
 	template <class Tf>
@@ -213,6 +215,28 @@ Matrix<T> Matrix<T>::GetMtx(const size_t kRowBeg, const size_t kColBeg, const si
         }
     }
     return part_mtx;
+}
+
+template<class T>
+void Matrix<T>::SetRow(const size_t kRow, const std::vector<T>& kData)
+{
+    assert(kData.size() == m_cols && kRow <= m_rows &&
+        "Error: SetRow! Invalid size of vector");
+    for (int it = 0; it < m_cols; ++it)
+    {
+        this->at(kRow, it) = kData.at(it);
+    }
+}
+
+template<class T>
+void Matrix<T>::SetCol(const size_t kCol, const std::vector<T>& kData)
+{
+    assert(kData.size() == m_rows && kCol <= m_cols &&
+        "Error: SetCol! Invalid size of vector");
+    for (int it = 0; it < m_rows; ++it)
+    {
+        this->at(it, kCol) = kData.at(it);
+    }
 }
 
 template <class T>
