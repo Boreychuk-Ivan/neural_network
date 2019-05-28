@@ -19,16 +19,32 @@ Training::Training
         exit(1);
     }
     ReadFile();
-};
+}
 
-Matrix<double> Training::GetInputMatrix()
+size_t Training::GetInputsNumber() const
+{
+    return m_inputs_number;
+}
+
+size_t Training::GetOutputsNumber() const
+{
+    return m_outputs_number;
+}
+
+size_t Training::GetTrainingSetSize() const
+{
+    return m_training_set_size;
+}
+
+
+Matrix<double> Training::GetInputMatrix() const
 {
     return m_input_matrix;
 }
 
-Matrix<double> Training::GetOutputMatrix()
+Matrix<double> Training::GetOutputMatrix() const
 {
-    return m_output_matrix;
+    return m_targets_matrix;
 }
 
 void Training::ReadFile()
@@ -52,7 +68,7 @@ void Training::ReadFile()
         }
     }
     m_input_matrix = read_matrix.GetMtx(0, 0, read_matrix.GetRowsNum()-1, m_inputs_number - 1);
-    m_output_matrix = read_matrix.GetMtx(0, m_inputs_number, read_matrix.GetRowsNum()-1, read_matrix.GetColsNum()-1);
+    m_targets_matrix = read_matrix.GetMtx(0, m_inputs_number, read_matrix.GetRowsNum()-1, read_matrix.GetColsNum()-1);
 }
 
 void Training::TrainOnSet()
@@ -60,14 +76,14 @@ void Training::TrainOnSet()
     for (size_t it = 0; it < m_training_set_size; ++it)
     {
         Vector<double> input_data = m_input_matrix.GetRow(it);
-        Vector<double> target_values = m_output_matrix.GetRow(it);
+        Vector<double> target_values = m_targets_matrix.GetRow(it);
 
         m_neural_network.AdjustmentNeuralNetwork(input_data, target_values);
 
-        std::cout << "Train set #" << it << "\n";
-        std::cout << "Inputs : " << input_data;
-        std::cout << "Outputs: " << m_neural_network.GetNeuralNetwork().GetOutputs();
-        std::cout << "Target: " << target_values << "\n";
+        //std::cout << "Train set #" << it << "\n";
+        //std::cout << "Inputs : " << input_data;
+        //std::cout << "Outputs: " << m_neural_network.GetNeuralNetwork().GetOutputs();
+        //std::cout << "Target: " << target_values << "\n";
     }
 }
 
@@ -75,8 +91,8 @@ void Training::TrainNeuralNetwork(const size_t& kEpochNumber)
 {
     for (int it = 0; it < kEpochNumber; ++it)
     {
-        std::cout << "###### Epoch " << it << " ###### "<<std::endl;
         TrainOnSet();
+        //std::cout << "###### Epoch " << it << " ###### "<<std::endl;
         //m_neural_network.GetNeuralNetwork().DisplayLayers();
         //m_neural_network.GetNeuralNetwork().DisplayNeurons();
     }
