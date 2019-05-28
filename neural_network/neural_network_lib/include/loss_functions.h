@@ -9,26 +9,27 @@ enum LossFunctionType
     ROOT_MEAN_SQUARE_ERROR
 };
 
-
 class LossFunctions
 {
 public:
-    LossFunctions() = delete;
     virtual double CalculateError(const Matrix<double>& kActual, const Matrix<double>& kPredicted) = 0;
 };
 
 
 class MeanSquareError : public LossFunctions
 {
+public:
     double CalculateError(const Matrix<double>& kActual, const Matrix<double>& kPredicted) final;
 };
 
 class RootMeanSquareError : public LossFunctions
 {
+public:
     double CalculateError(const Matrix<double>& kActual, const Matrix<double>& kPredicted) final;
 };
 
 class LossFunctionsFabric
 {
-    std::shared_ptr<LossFunctions> CreateLossFunction(const LossFunctionType&);
+public:
+    static std::shared_ptr<LossFunctions> CreateLossFunction(const LossFunctionType&);
 };
