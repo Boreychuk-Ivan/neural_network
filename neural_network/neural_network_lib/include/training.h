@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "back_propagation.h"
 #include "neural_network.h"
+#include "loss_functions.h"
 
 class Training
 {
@@ -17,7 +18,8 @@ public:
         const std::string& kFilePath, 
         const size_t kInputsNumber, 
         const size_t kOutputsNumber, 
-        const size_t kTrainingSetSize
+        const size_t kTrainingSetSize,
+        const LossFunctionType& kType = MEAN_SQUARE_ERROR
     );
 
     //Getters
@@ -32,7 +34,8 @@ public:
     void ReadFile();
     void TrainOnSet();
     void TrainNeuralNetwork(const size_t& kEpochNumber);
-
+    double CalculateError();
+    void DisplayResults();
 
 private:
     BackPropagation m_neural_network;
@@ -44,4 +47,6 @@ private:
 
     Matrix<double> m_input_matrix;
     Matrix<double> m_targets_matrix;
+
+    std::shared_ptr<LossFunctions> m_loss_function;
 };

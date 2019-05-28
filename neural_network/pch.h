@@ -7,5 +7,6 @@
 #include <cstdlib>   //rand srand
 #include <fstream>
 #include <memory>   //shared_ptr
-    
+#include <sstream>
+
 #include "matrix_lib/matrix_lib.h"
