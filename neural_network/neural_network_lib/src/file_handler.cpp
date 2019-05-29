@@ -62,14 +62,16 @@ NeuralNetwork FileHander::ReadNeuralNetworkFromFile(const std::string & kFilePat
 
         std::getline(file, input_line, ':');
         assert(input_line == "## Weights");
-        file.get(); file.get(); // ":\n"
+        file.get(); 
+        //file.get(); // ":\n"
         Matrix<double> weigths = ReadMatrixFromFile(&file, file.tellg(), layer_params.at(1), layer_params.at(0));
         neureal_network.SetSynapticWeigths(it, weigths);
         file.get(); file.get(); 
 
         std::getline(file, input_line, ':');
         assert(input_line == "## Biases");
-        file.get(); file.get(); // ":\n"
+        file.get(); 
+        //file.get(); // ":\n"
         Matrix<double> biases = ReadMatrixFromFile(&file, file.tellg(), layer_params.at(1), 1);
         biases = !biases;
         neureal_network.SetBiases(it, biases);
