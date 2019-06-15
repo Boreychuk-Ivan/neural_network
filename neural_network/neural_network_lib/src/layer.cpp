@@ -10,7 +10,7 @@ Layer::Layer(const unsigned& inputs_number, const unsigned& neurons_number, cons
 
 void Layer::InitializeRandomWeights(const double& min_value, const double& max_value)
 {
-    assert(max_value > min_value);
+    err::assert_throw(max_value > min_value,"Error <InitializeRandomWeights>: max_value < min_value\n");
     int precision = 100;
     for(int it = 0; it < m_synaptic_weights.GetSize(); ++it)
     {
@@ -20,7 +20,7 @@ void Layer::InitializeRandomWeights(const double& min_value, const double& max_v
 
 void Layer::InitializeRandomBiases(const double& min_value, const double& max_value)
 {
-    assert(max_value > min_value);
+	err::assert_throw(max_value > min_value, "Error <InitializeRandomBiases>: max_value < min_value\n");
     int precision = 100;
     for (int it = 0; it < m_biases.GetSize(); ++it)
     {
@@ -41,7 +41,8 @@ void Layer::AdjustmentBiases(const Vector<double> kDeltaBiases)
 Vector<double> Layer::CalculateLocalFields(Vector<double> input_vector)
 {
     unsigned inputs_number = m_synaptic_weights.GetColsNum();
-    assert(input_vector.GetSize() == inputs_number);
+	err::assert_throw(input_vector.GetSize() == inputs_number, "Error <CalculateLocalFields> : Invalid input vector\n");
+
     if (input_vector.IsRow())
         input_vector = !input_vector; //Transpose
     unsigned neurons_number = m_neurons.size();
@@ -74,21 +75,21 @@ void Layer::SetActivationFunction(const ActivationFunctionType & kActivationFunc
 void Layer::SetLocalField(const Vector<double> kLocalFieldVector)
 {
     int neurons_num = m_neurons.size();
-    assert(neurons_num == kLocalFieldVector.GetSize());
+	err::assert_throw(neurons_num == kLocalFieldVector.GetSize(), "Error <SetLocalField> : Invalid input vector\n");
     for (int it = 0; it < neurons_num; ++it)
         m_neurons.at(it).SetLocalField(kLocalFieldVector.at(it));
 }
 
 void Layer::SetActivatedValues(const Vector<double> kActivatedValueVector)
 {
-    assert(m_neurons.size() == kActivatedValueVector.GetSize());
+	err::assert_throw(m_neurons.size() == kActivatedValueVector.GetSize(),"Error <SetActivatedValues> : Invalid input vector\n");
     for(int it = 0; it < m_neurons.size(); ++it)
         m_neurons.at(it).SetActivatedValue(kActivatedValueVector.at(it));
 }
 
 void Layer::SetSynapticWeights(const Matrix<double> kSynapticWeigths)
 {
-    assert(m_synaptic_weights.IsEqualSize(kSynapticWeigths));
+	err::assert_throw(m_synaptic_weights.IsEqualSize(kSynapticWeigths), "Error <SetSynapticWeights> : Invalid input matrix\n");
     m_synaptic_weights = kSynapticWeigths;
 }
 
@@ -96,7 +97,7 @@ void Layer::SetSynapticWeights(const Matrix<double> kSynapticWeigths)
 
 void Layer::SetBiases(const Vector<double> kBiases)
 {
-    assert(m_neurons.size() == kBiases.GetSize());
+	err::assert_throw(m_neurons.size() == kBiases.GetSize(), "Error <SetBiases> : Invalid input vector\n");
     for (int it = 0; it < m_neurons.size(); ++it)
         m_biases.at(it) = kBiases.at(it);
 }
@@ -155,25 +156,27 @@ ActivationFunctionType Layer::GetActivationFunctionType() const
 
 void Layer::Display()
 {
-    std::cout << "Layer parametrs:\n";
-    std::cout << "Neurons number: " << m_neurons.size() << "\n";
-    std::cout << "Number of inputs: " << m_synaptic_weights.GetColsNum() << "\n";
-    std::cout << "Activation function:" <<
-        ActivationFunctions::GetString(m_neurons.at(0).GetActivationFunctionType()) << "\n";
-    std::cout << "Biases : " << m_biases << "\n";
-    std::cout << "Synaptic weights" << m_synaptic_weights << "\n";
-    std::cout << "\n";
+	std::stringstream out;
+	out << "Layer parametrs:\n";
+	out << "Neurons number: " << m_neurons.size() << "\n";
+	out << "Number of inputs: " << m_synaptic_weights.GetColsNum() << "\n";
+	out << "Activation function:";
+    out << ActivationFunctions::GetString(m_neurons.at(0).GetActivationFunctionType()) << "\n";
+	out << "Biases : " << m_biases << "\n";
+	out << "Synaptic weights" << m_synaptic_weights << "\n\n";
+    std::cout << out.str();
 }
 
 void Layer::DisplayNeurons()
 {
-    std::cout << "Layer neurons parametrs:\n";
-    std::cout << "lf\tav\tdv\n";
-    std::cout.precision(5);
-    std::fixed;
+	std::stringstream out;
+	out << "Layer neurons parametrs:\n";
+	out << "lf\tav\tdv\n";
+	out.precision(5);
+	out << std::fixed;
     for (int it = 0; it < m_neurons.size(); ++it)
     {
-        std::cout 
+		out
             << (m_neurons.at(it).GetLocalFiled() > 0 ? "" : " ")
             << m_neurons.at(it).GetLocalFiled() << "\t"
             << (m_neurons.at(it).GetActivatedValue() > 0 ? "" : " ")
@@ -181,5 +184,5 @@ void Layer::DisplayNeurons()
             << (m_neurons.at(it).GetDerivativeValue() > 0 ? "" : " ")
             << m_neurons.at(it).GetDerivativeValue() << "\n";
     }
-    std::cout << "\n";
+    std::cout << out.str() << "\n";
 }

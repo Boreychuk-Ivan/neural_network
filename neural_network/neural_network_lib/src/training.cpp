@@ -14,11 +14,7 @@ Training::Training
     m_neural_network(kNeuralNetwork, kLearningRate, kMomentum), m_training_file( std::ifstream(kFilePath, std::ios::in) ),
     m_inputs_number(kInputsNumber), m_outputs_number(kOutputsNumber), m_training_set_size(kTrainingSetSize)
 {
-    if (!m_training_file.is_open())
-    {
-        std::cerr << "Error! Training file was not opened!\n";
-        exit(1);
-    }
+	err::assert_throw(m_training_file.is_open(), "Error <Training>: Training file was not opened!\n");
     ReadFile();
     m_loss_function = LossFunctionsFabric::CreateLossFunction(kType);
 }
@@ -63,7 +59,6 @@ void Training::TrainOnSet()
     {
         Vector<double> input_data = m_input_matrix.GetRow(it);
         Vector<double> target_values = m_targets_matrix.GetRow(it);
-
         m_neural_network.AdjustmentNeuralNetwork(input_data, target_values);
     }
 }

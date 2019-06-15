@@ -8,10 +8,15 @@
 
 int main()
 {
-    srand(1);
-    NeuralNetwork nn_test({ 2, 2, 1 });
-    Training trainer(nn_test, 0.5, 0.00001, "../../data/training_set.dt", 2, 1, 4);
-    trainer.TrainNeuralNetwork(10000);
+	try
+	{
+		srand(1);
+		Neuron n(0, SIGMOID);
+	}
+	catch (err::NNException& e)
+	{
+		std::cout << e.what();
+	}
 
     return 0;
 }

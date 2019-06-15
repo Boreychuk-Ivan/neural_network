@@ -82,15 +82,16 @@ size_t NeuralNetwork::GetOutputsNumber() const
 
 void NeuralNetwork::DisplayArchitecture()
 {
-    std::cout << "Neural network parametrs:\n";
-    std::cout << "Inputs number: "  << m_neuron_layers.at(0).GetNeuronsNumber() << "\n";
-    std::cout << "Outputs number: " << m_neuron_layers.back().GetNeuronsNumber() << "\n";
+	std::stringstream out;
+	out << "Neural network parametrs:\n";
+    out << "Inputs number: "  << m_neuron_layers.at(0).GetNeuronsNumber() << "\n";
+    out << "Outputs number: " << m_neuron_layers.back().GetNeuronsNumber() << "\n";
     for(int layer_it = 1; layer_it < m_neuron_layers.size(); ++layer_it)
     {
-        std::cout << "Hidden layer #" << layer_it - 1 << " : " 
+        out << "Hidden layer #" << layer_it - 1 << " : " 
             << m_neuron_layers.at(layer_it).GetNeuronsNumber() << "\n";
     }
-    std::cout << "\n";
+    std::cout << out.str() << "\n";
 }
 
 void NeuralNetwork::DisplayLayers()

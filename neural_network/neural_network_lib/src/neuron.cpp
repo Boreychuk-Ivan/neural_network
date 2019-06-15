@@ -21,13 +21,15 @@ void Neuron::CalculateDerivativeValue()
 
 void Neuron::Display()
 {
-    std::cout << "Neuron parametrs:\n";
-    std::cout << "Activation function: " << ActivationFunctions::GetString(m_activation_function_type) << std::endl;
-    std::cout << "Local field:" << m_local_field << std::endl;
-    std::cout << "Activation value:" << m_activated_value << std::endl;
-    std::cout << "Deriative value: " << m_derivative_value << std::endl;
-    std::cout << "Local gradient:" << m_local_gradient << std::endl;
-    std::cout << std::endl << std::endl;
+	std::stringstream out;
+	out << "Neuron parametrs:\n";
+	out << "Activation function: " << ActivationFunctions::GetString(m_activation_function_type) << std::endl;
+	out << "Local field:" << m_local_field << std::endl;
+	out << "Activation value:" << m_activated_value << std::endl;
+	out << "Deriative value: " << m_derivative_value << std::endl;
+	out << "Local gradient:" << m_local_gradient << std::endl;
+	out << std::endl << std::endl;
+	std::cout << out.str();
 }
 
 void Neuron::SetActivationFunction(ActivationFunctionType type)
@@ -52,8 +54,7 @@ void Neuron::SetActivationFunction(ActivationFunctionType type)
     }
     else
     {
-        std::cerr << "Error! Invalid activation function\n";
-        exit(1);
+        throw err::NNException("Error! Invalid activation function\n");
     }
 }
 
@@ -103,7 +104,6 @@ ActivationFunctionType ActivationFunctions::Type(const std::string& kType)
     }
     else
     {
-        std::cout << "Error! Invalid activation function\n";
-        exit(1);
+		throw err::NNException("Error! Invalid activation function\n");
     }
 }
