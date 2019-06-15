@@ -4,7 +4,8 @@ double MeanSquareError::CalculateError(const Matrix<double>& kActual, const Matr
 {
     if (!kActual.IsEqualSize(kPredicted))
     {
-        std::cout << "MSRE : Error! Invalid size of actual or predicted matrix\n";
+        std::cerr << "MSRE : Error! Invalid size of actual or predicted matrix\n";
+        exit(1);
     }
 
     const size_t kBatchNumbers = kActual.GetRowsNum();
@@ -40,7 +41,8 @@ double RootMeanSquareError::CalculateError(const Matrix<double>& kActual, const 
 {
     if (!kActual.IsEqualSize(kPredicted))
     {
-        std::cout << "RMSRE : Error! Invalid size of actual or predicted matrix\n";
+        std::cerr << "RMSRE : Error! Invalid size of actual or predicted matrix\n";
+        exit(1);
     }
     
     const size_t kBatchNumbers = kActual.GetRowsNum();
