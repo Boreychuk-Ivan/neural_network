@@ -95,10 +95,6 @@ void BackPropagation::AdjustmentNeuralNetwork(const Vector<double>& kInputData, 
     m_neural_network.GetLayer(0).AdjustmentBiases(delta_biases);
 }
 
-//Vector<double> BackPropagation::GetError()
-//{
-//    return m_error;
-//}
 
 NeuralNetwork BackPropagation::GetNeuralNetwork() const
 {
