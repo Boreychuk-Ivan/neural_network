@@ -29,7 +29,7 @@ void FileHander::WriteNeuralNetworkToFile(const std::string& kFilePath, const Ne
         out << "## Biases:" << !current_layer.GetBiases();
         out << "\n";
     }
-    std::cout << "File with neural network was written!\n";
+    std::cout << "File with neural network was written!\n\n";
     out.close();
 }
 

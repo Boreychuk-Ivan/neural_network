@@ -75,11 +75,14 @@ void Training::TrainNeuralNetwork(const size_t& kEpochNumber)
         TrainOnSet();
         if (it % 50 == 0)
         {
-            std::cout << "###### Epoch " << it << " ###### " << std::endl;
+            std::cout << "########## Epoch " << it << " ##########" << std::endl;
             DisplayResults();
-            std::cout << "################################\n";
+            std::cout << "################################\n\n";
         }
     }
+	std::cout << "###### End of training ######\n";
+	DisplayResults();
+	std::cout << "\n\n";
 }
 
 double Training::CalculateError()
