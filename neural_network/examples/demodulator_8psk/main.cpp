@@ -8,9 +8,9 @@ int main()
 	try {
 		srand(1);
 		// Neural network creating: {inputs, hidden neurons, outputs}:
-		const size_t kInputsNumber = 2;
-		const size_t kOutputsNumber = 8;
-		const size_t kHiddenNeurons = 8;
+		const int kInputsNumber = 2;
+		const int kOutputsNumber = 8;
+		const int kHiddenNeurons = 8;
 		NeuralNetwork neural_network({ kInputsNumber, kHiddenNeurons, kOutputsNumber });
 
 		//Trainer creation

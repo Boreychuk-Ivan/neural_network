@@ -34,9 +34,9 @@ namespace aux
 
 	NeuralNetwork CreateTestNeuralNetwork()
 	{
-		const size_t kInputsNumber = 2;
-		const size_t kOutputsNumber = 2;
-		const size_t kHiddenNeurons = 2;
+		const int kInputsNumber = 2;
+		const int kOutputsNumber = 2;
+		const int kHiddenNeurons = 2;
 		NeuralNetwork neural_network({ kInputsNumber, kHiddenNeurons, kOutputsNumber });
 		neural_network.SetActivationFunction(0, LINEAR);
 		neural_network.SetActivationFunction(1, LINEAR);
