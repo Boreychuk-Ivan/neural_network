@@ -15,8 +15,8 @@ set (SOURCES matrix_tests.h>
              neuron_tests.h>
              layer_tests.h>
              neural_network_tests.h>
-             file_handler_tests.h>
              back_propagation_tests.h>
+             # file_handler_tests.h>
              run_all_tests.cpp>
              auxillary_functions.h>
              )
