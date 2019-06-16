@@ -26,6 +26,9 @@ TEST(Layer_tests, t0_random_initialisation)
 
 	std::for_each(weights.begin(), weights.end(), [&](double n) { ASSERT_TRUE((n > -treshold) && (n < treshold)); });
 	std::for_each(biases.begin(), biases.end(), [&](double n) { ASSERT_TRUE((n > -treshold) && (n < treshold)); });
+
+	ASSERT_THROW(layer.InitializeRandomWeights(treshold, -treshold), err::NNException);
+	ASSERT_THROW(layer.InitializeRandomBiases(treshold, -treshold), err::NNException);
 }
 
 
@@ -39,6 +42,9 @@ TEST(Layer_tests, t1_calculate_local_field)
 	{
 		ASSERT_EQ(local_field_actual.at(it), local_field_expect.at(it));
 	}
+
+	ASSERT_THROW(layer.CalculateLocalFields({}), err::NNException);
+	ASSERT_THROW(layer.CalculateLocalFields({1,2,3,4}), err::NNException);
 }
 
 
@@ -47,12 +53,15 @@ TEST(Layer_tests, t2_calculate_activated_values)
 	Layer layer = CreateTestLayer();
 
 	Vector<double> input = { 1,2 };
-	Vector<double> activated_values_actual = layer.CalculateLocalFields(input);
+	Vector<double> activated_values_actual = layer.CalculateActivatedValues(input);
 	Vector<double> activated_values_expect{ 6,12 };
 	for (size_t it = 0; it < layer.GetNeuronsNumber(); ++it)
 	{
 		ASSERT_EQ(activated_values_actual.at(it), activated_values_expect.at(it));
 	}
+
+	ASSERT_THROW(layer.CalculateActivatedValues({}), err::NNException);
+	ASSERT_THROW(layer.CalculateActivatedValues({ 1,2,3,4 }), err::NNException);
 }
 
 TEST(Layer_tests, t3_calculate_derivative_values)
@@ -65,6 +74,9 @@ TEST(Layer_tests, t3_calculate_derivative_values)
 	{
 		ASSERT_EQ(derivative_value_actual.at(it), derivative_value_expect.at(it));
 	}
+
+	ASSERT_THROW(layer.CalculateDerivativeValues({}), err::NNException);
+	ASSERT_THROW(layer.CalculateDerivativeValues({ 1,2,3,4 }), err::NNException);
 }
 
 TEST(Layer_tests, t4_adjustment_weights)
@@ -77,6 +89,9 @@ TEST(Layer_tests, t4_adjustment_weights)
 	{
 		ASSERT_EQ(new_weights.at(it), 0);
 	}
+
+	ASSERT_THROW(layer.AdjustmentWeights({}), MatrixException);
+	ASSERT_THROW(layer.AdjustmentWeights(Matrix<double>(4,4)), MatrixException);
 }
 
 TEST(Layer_tests, t5_adjustment_biases)
@@ -89,4 +104,7 @@ TEST(Layer_tests, t5_adjustment_biases)
 	{
 		ASSERT_EQ(new_biases.at(it), 0);
 	}
+
+	ASSERT_THROW(layer.AdjustmentBiases({}), MatrixException);
+	ASSERT_THROW(layer.AdjustmentBiases({1,2,3,4}), MatrixException);
 }
