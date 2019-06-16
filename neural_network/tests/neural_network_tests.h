@@ -4,21 +4,6 @@
 #include <gtest/gtest.h>
 
 
-NeuralNetwork CreateTestNeuralNetwork()
-{
-	const size_t kInputsNumber = 2;
-	const size_t kOutputsNumber = 2;
-	const size_t kHiddenNeurons = 2;
-	NeuralNetwork neural_network({ kInputsNumber, kHiddenNeurons, kOutputsNumber });
-	neural_network.SetActivationFunction(0, LINEAR);
-	neural_network.SetActivationFunction(1, LINEAR);
-	neural_network.SetSynapticWeigths(0, Matrix<double>(2, 2, { 1,2,3,4 }));
-	neural_network.SetSynapticWeigths(1, Matrix<double>(2, 2, { 1,2,3,4 }));
-	neural_network.SetBiases(0, { 1,1 });
-	neural_network.SetBiases(1, { 1,1 });
-	return neural_network;
-}
-
 TEST(Neural_network_tests, t0_constructor)
 {
 	ASSERT_THROW(NeuralNetwork({ 0 }), err::NNException);
@@ -27,7 +12,7 @@ TEST(Neural_network_tests, t0_constructor)
 
 TEST(Neural_network_tests, t1_calculate_outputs)
 {
-	NeuralNetwork neural_network = CreateTestNeuralNetwork();
+	NeuralNetwork neural_network = aux::CreateTestNeuralNetwork();
 	Vector<double> inputs{ 1,1 };
 	auto output_values_actual = neural_network.CalculateOutputs(inputs);
 	Vector<double> output_values_expect{ 21,45 };
@@ -39,7 +24,7 @@ TEST(Neural_network_tests, t1_calculate_outputs)
 
 TEST(Neural_network_tests, t2_feed_forward)
 {
-	NeuralNetwork neural_network = CreateTestNeuralNetwork();
+	NeuralNetwork neural_network = aux::CreateTestNeuralNetwork();
 	Vector<double> inputs{ 1,1 };
 	auto output_values_actual = neural_network.FeedForward(inputs);
 	Vector<double> output_values_expect{ 21,45 };
