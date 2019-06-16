@@ -15,9 +15,9 @@ public:
     
     void AdjustmentWeights(const Matrix<double> kDeltaWeights);
     void AdjustmentBiases(const Vector<double> kDeltaBiases);
-    Vector<double> CalculateLocalFields(Vector<double> input_vector);
-    Vector<double> CalculateActivatedValues();
-    Vector<double> CalculateDerivativeValues();
+    Vector<double> CalculateLocalFields(const Vector<double> kInputVector);
+    Vector<double> CalculateActivatedValues(const Vector<double> kInputVector);
+    Vector<double> CalculateDerivativeValues(const Vector<double> kInputVector);
 
     void SetActivationFunction(const ActivationFunctionType& kActivationFunction);
     void SetLocalField(const Vector<double> kLocalFieldVector);
@@ -27,7 +27,7 @@ public:
 
     size_t GetNeuronsNumber() const;
     size_t GetInputsNumber() const;
-    Vector<double> GetLocalField() const;
+    Vector<double> GetLocalFields() const;
     Vector<double> GetActivatedValues() const;
     Vector<double> GetDerivativeValues() const;
     Matrix<double> GetSynapticWeights() const;

@@ -38,31 +38,33 @@ void Layer::AdjustmentBiases(const Vector<double> kDeltaBiases)
     m_biases = m_biases + kDeltaBiases;
 }
 
-Vector<double> Layer::CalculateLocalFields(Vector<double> input_vector)
+Vector<double> Layer::CalculateLocalFields(const Vector<double> kInputVector)
 {
     unsigned inputs_number = m_synaptic_weights.GetColsNum();
-	err::assert_throw(input_vector.GetSize() == inputs_number, "Error <CalculateLocalFields> : Invalid input vector\n");
+	err::assert_throw(kInputVector.GetSize() == inputs_number, "Error <CalculateLocalFields> : Invalid input vector\n");
 
-    if (input_vector.IsRow())
-        input_vector = !input_vector; //Transpose
+	Vector<double> inputs = (kInputVector.IsRow()) ? !kInputVector : kInputVector;
+
     unsigned neurons_number = m_neurons.size();
     Vector<double> local_field(neurons_number);
-    local_field = (m_synaptic_weights * input_vector + !m_biases);
+    local_field = (m_synaptic_weights * inputs + !m_biases);
     SetLocalField(local_field);
     return local_field;
 }
 
-Vector<double> Layer::CalculateActivatedValues()
+Vector<double> Layer::CalculateActivatedValues(const Vector<double> kInputVector)
 {
-    for(auto& neuron : m_neurons)
-        neuron.CalculateActivatedValue();
+	auto local_field = CalculateLocalFields(kInputVector);
+	for (size_t it = 0; it < m_neurons.size(); ++it)
+		m_neurons.at(it).CalculateActivatedValue(local_field.at(it));
     return GetActivatedValues();
 }
 
-Vector<double> Layer::CalculateDerivativeValues()
+Vector<double> Layer::CalculateDerivativeValues(const Vector<double> kInputVector)
 {
-    for (auto& neuron : m_neurons)
-        neuron.CalculateDerivativeValue();
+	auto local_field = CalculateLocalFields(kInputVector);
+	for (size_t it = 0; it < m_neurons.size(); ++it)
+		m_neurons.at(it).CalculateDerivativeValue(local_field.at(it));
     return GetDerivativeValues();
 }
 
@@ -113,7 +115,7 @@ size_t Layer::GetInputsNumber() const
     return m_synaptic_weights.GetColsNum();
 }
 
-Vector<double> Layer::GetLocalField() const
+Vector<double> Layer::GetLocalFields() const
 {
     Vector<double> local_fields(m_neurons.size());
     for (int neuron_it = 0; neuron_it < m_neurons.size(); ++neuron_it)

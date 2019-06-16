@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
 project(matrix_lib)
 
-set(HEADERS matrix_lib.h)
-
 add_library(matrix_lib INTERFACE)
 
 target_sources(matrix_lib INTERFACE "${CMAKE_CURRENT_LIST_DIR}/matrix_lib.h")
