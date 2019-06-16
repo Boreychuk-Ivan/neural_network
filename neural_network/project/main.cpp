@@ -10,12 +10,15 @@ int main()
 {
 	try
 	{
-		srand(1);
-		Neuron n(0, SIGMOID);
+
 	}
 	catch (err::NNException& e)
 	{
-		std::cout << e.what();
+		
+	}
+	catch (MatrixException& me)
+	{
+		std::cout << me.what();
 	}
 
     return 0;
