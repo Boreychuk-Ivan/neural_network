@@ -44,6 +44,9 @@ int main()
 	{
 		std::cerr << error.what();
 	}
-
+	catch (MatrixException& error)
+	{
+		std::cerr << error.what();
+	}
 	return 0;
 }

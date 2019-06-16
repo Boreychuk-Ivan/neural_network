@@ -14,15 +14,15 @@ int main()
 		NeuralNetwork neural_network({ kInputsNumber, kHiddenNeurons, kOutputsNumber });
 
 		//Trainer creation
-		const double kLearningRate = 0.7;
-		const double kMomentum = 0.0001;
+		const double kLearningRate = 0.8;
+		const double kMomentum = 0;
 
 		std::string training_file = "data/training_set.dt";
 		const size_t kTrainingSetSize = 8;
 		Training trainer(neural_network, kLearningRate, kMomentum, training_file, kInputsNumber, kOutputsNumber, kTrainingSetSize);
 
 		//Train neural network 
-		const size_t kEpochNumber = 2000;
+		const size_t kEpochNumber = 500;
 		trainer.TrainNeuralNetwork(kEpochNumber);
 
 		//Save neural network 
@@ -56,6 +56,10 @@ int main()
 		std::cout << "Inputs : 7 -  0.9239-0.3827i" << ", Output: " << ResultToNumber(neural_network_learned.CalculateOutputs({ 0.9239, -0.3827 })) << "\n";
 	}
 	catch (err::NNException& error)
+	{
+		std::cerr << error.what();
+	}
+	catch (MatrixException& error)
 	{
 		std::cerr << error.what();
 	}
