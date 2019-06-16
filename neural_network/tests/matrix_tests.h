@@ -38,10 +38,10 @@ TEST(Matrix_tests, t0_constructors)
 
 TEST(Matrix_tests, t1_get_matrix_part)
 {
-	Matrix<int> matrix(4, 4, { 0,1,2,3, 4,5,6,7, 8,9,10,11, 12,13,14,15 });
+	Matrix<int> matrix(4, 4, { 0,1,2,3,  4,5,6,7,  8,9,10,11,  12,13,14,15 });
 	Matrix<int> matrix_part = matrix.GetMtx(0,0,1,1);
-	Matrix<int> matrix_part_actual(2, 2, { 0,1, 4,5 });
-	ASSERT_TRUE(matrix_part == matrix_part_actual);
+	Matrix<int> matrix_part_expect(2, 2, { 0,1, 4,5 });
+	ASSERT_TRUE(matrix_part == matrix_part_expect);
 }
 
 TEST(Matrix_tests, t2_is_equal_size)
@@ -56,17 +56,17 @@ TEST(Matrix_tests, t2_is_equal_size)
 TEST(Matrix_tests, t3_sum_elements)
 {
 	Matrix<int> matrix_0(1, 5, {0,1,2,3,4});
-	int actual_sum = 0 + 1 + 2 + 3 + 4;
-	ASSERT_EQ(matrix_0.SumElements(), actual_sum);
+	int expect_sum = 0 + 1 + 2 + 3 + 4;
+	ASSERT_EQ(matrix_0.SumElements(), expect_sum);
 }
 
 TEST(Matrix_tests, t4_max_min_elements)
 {
 	Matrix<int> matrix_0(1, 5, { -2,-1,0,1,2 });
-	int actual_min = -2;
-	int actual_max = 2;
-	ASSERT_EQ(matrix_0.MinElement(), actual_min);
-	ASSERT_EQ(matrix_0.MaxElement(), actual_max);
+	int expect_min = -2;
+	int expect_max = 2;
+	ASSERT_EQ(matrix_0.MinElement(), expect_min);
+	ASSERT_EQ(matrix_0.MaxElement(), expect_max);
 }
 
 TEST(Matrix_tests, t5_operator_plus_minus_mtx_mtx)
@@ -76,11 +76,11 @@ TEST(Matrix_tests, t5_operator_plus_minus_mtx_mtx)
 	Matrix<int> matrix_sum  = matrix_0 + matrix_1;
 	Matrix<int> matrix_diff = matrix_0 - matrix_1;
 
-	Matrix<int> actual_sum (2, 2, { 5,5,5,5 });
-	Matrix<int> actual_diff(2, 2, {-3,-1,1,3});
+	Matrix<int> expect_sum (2, 2, { 5,5,5,5 });
+	Matrix<int> expect_diff(2, 2, {-3,-1,1,3});
 
-	ASSERT_TRUE(matrix_sum == actual_sum);
-	ASSERT_TRUE(matrix_diff == actual_diff);
+	ASSERT_TRUE(matrix_sum == expect_sum);
+	ASSERT_TRUE(matrix_diff == expect_diff);
 }
 
 TEST(Matrix_tests, t6_operator_plus_minus_mtx_num)
@@ -89,11 +89,11 @@ TEST(Matrix_tests, t6_operator_plus_minus_mtx_num)
 	Matrix<int> matrix_sum = matrix_0 + 5;
 	Matrix<int> matrix_diff = matrix_0 - 4;
 
-	Matrix<int> actual_sum(2, 2, { 6,7,8,9 });
-	Matrix<int> actual_diff(2, 2, { -3,-2,-1,0 });
+	Matrix<int> expect_sum(2, 2, { 6,7,8,9 });
+	Matrix<int> expect_diff(2, 2, { -3,-2,-1,0 });
 
-	ASSERT_TRUE(matrix_sum == actual_sum);
-	ASSERT_TRUE(matrix_diff == actual_diff);
+	ASSERT_TRUE(matrix_sum == expect_sum);
+	ASSERT_TRUE(matrix_diff == expect_diff);
 }
 
 TEST(Matrix_tests, t7_operator_mult_mtx)
@@ -102,17 +102,17 @@ TEST(Matrix_tests, t7_operator_mult_mtx)
 	Matrix<int> matrix_mult_0 = matrix_0 * matrix_0;
 	Matrix<int> matrix_mult_1 = matrix_0 * 5;
 
-	Matrix<int> actual_mult_0(2, 2, { 7,10, 15,22});
-	Matrix<int> actual_mult_1(2, 2, { 5,10, 15,20});
+	Matrix<int> expect_mult_0(2, 2, { 7,10, 15,22});
+	Matrix<int> expect_mult_1(2, 2, { 5,10, 15,20});
 
-	ASSERT_TRUE(matrix_mult_0 == actual_mult_0);
-	ASSERT_TRUE(matrix_mult_1 == actual_mult_1);
+	ASSERT_TRUE(matrix_mult_0 == expect_mult_0);
+	ASSERT_TRUE(matrix_mult_1 == expect_mult_1);
 }
 
 TEST(Matrix_tests, t8_transpose)
 {
 	Matrix<int> matrix_0(2, 2, { 1,2,3,4 });
 	Matrix<int> matrix_transpose = !matrix_0;
-	Matrix<int> actual_transpose(2, 2, {1,3, 2,4});
-	ASSERT_TRUE(matrix_transpose == actual_transpose);
+	Matrix<int> expect_transpose(2, 2, {1,3, 2,4});
+	ASSERT_TRUE(matrix_transpose == expect_transpose);
 }
