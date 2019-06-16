@@ -14,5 +14,6 @@ namespace err
 
 		const char* what() const noexcept { return m_error.c_str(); }
 	};
+	
 	void assert_throw(const bool kCondition, const std::string& kMessege);
 }

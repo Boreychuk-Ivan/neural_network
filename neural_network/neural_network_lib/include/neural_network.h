@@ -11,9 +11,8 @@ public:
     NeuralNetwork(const std::vector<unsigned>& kArchitecture);
     
     Vector<double> CalculateOutputs(const Vector<double> kInputVector);
-    void CalculateDerivativeValues();
-    Vector<double> CalculateDerivativeValuesOnLayer(const unsigned& kNumLayer);
-
+	Vector<double> FeedForward(const Vector<double> kInputVector);		//Calculate outputs + derivative values
+	
     //Setters
     void SetActivationFunction(const unsigned& kNumLayer, const ActivationFunctionType& kActivationFunction);
     void SetSynapticWeigths(const unsigned& kNumLayer, const Matrix<double> kSynapticWeigths);

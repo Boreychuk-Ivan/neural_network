@@ -14,25 +14,26 @@ NeuralNetwork::NeuralNetwork(const std::vector<unsigned>& kArchitecture)
 
 Vector<double> NeuralNetwork::CalculateOutputs(const Vector<double> kInputVector)
 {
-    m_neuron_layers.at(0).CalculateLocalFields(kInputVector);
+	Vector<double> input_next_layer = m_neuron_layers.at(0).CalculateActivatedValues(kInputVector);
     for (size_t layer_it = 0; layer_it < m_neuron_layers.size()-1; ++layer_it)
     {
-        Vector<double> input_next_layer = m_neuron_layers.at(layer_it).CalculateActivatedValues();
-        m_neuron_layers.at(layer_it+1).CalculateLocalFields(input_next_layer);
+		input_next_layer = m_neuron_layers.at(layer_it+1).CalculateActivatedValues(input_next_layer);
     }
-    return m_neuron_layers.back().CalculateActivatedValues();
+    return m_neuron_layers.back().GetActivatedValues();
 }
 
-void NeuralNetwork::CalculateDerivativeValues()
+Vector<double> NeuralNetwork::FeedForward(const Vector<double> kInputVector)
 {
-    for (auto& layer : m_neuron_layers)
-        layer.CalculateDerivativeValues();
+	Vector<double> input_next_layer = m_neuron_layers.at(0).CalculateActivatedValues(kInputVector);
+	m_neuron_layers.at(0).CalculateDerivativeValues(kInputVector);
+	for (size_t layer_it = 0; layer_it < m_neuron_layers.size()-1; ++layer_it)
+	{
+		m_neuron_layers.at(layer_it + 1).CalculateDerivativeValues(input_next_layer);
+		input_next_layer = m_neuron_layers.at(layer_it + 1).CalculateActivatedValues(input_next_layer);
+	}
+	return m_neuron_layers.back().GetActivatedValues();
 }
 
-Vector<double> NeuralNetwork::CalculateDerivativeValuesOnLayer(const unsigned& kNumLayer)
-{
-    return m_neuron_layers.at(kNumLayer).CalculateDerivativeValues();
-}
 
 void NeuralNetwork::SetActivationFunction(const unsigned& kNumLayer, const ActivationFunctionType& kActivationFunction)
 {

@@ -44,9 +44,8 @@ void BackPropagation::AdjustmentNeuralNetwork(const Vector<double>& kInputData, 
 {
     size_t layers_number = m_neural_network.GetLayersNumber();
     
-    //Feed forward
-    m_neural_network.CalculateOutputs(kInputData);
-    Vector<double> error = kTargetValues - m_neural_network.GetOutputs();
+    auto output_values = m_neural_network.FeedForward(kInputData);
+    Vector<double> error = kTargetValues - output_values;
 
     //Back propagation
     Matrix<double> weights;
@@ -61,14 +60,14 @@ void BackPropagation::AdjustmentNeuralNetwork(const Vector<double>& kInputData, 
     Vector<double> last_delata_biases;
     
     //Out layer
-    derivative_values = m_neural_network.GetLayer(layers_number-1).CalculateDerivativeValues();
+    derivative_values = m_neural_network.GetLayer(layers_number-1).GetDerivativeValues();
     local_gradients = error.DotMult(derivative_values);    
 
     //Hidden layers
     for (int it = layers_number-1; it > 0; --it)    
     {
         //Adjustment weights
-        derivative_values = m_neural_network.GetLayer(it - 1).CalculateDerivativeValues();
+        derivative_values = m_neural_network.GetLayer(it - 1).GetDerivativeValues();
         weights = m_neural_network.GetLayer(it).GetSynapticWeights();
         input_vector = m_neural_network.GetLayer(it-1).GetActivatedValues();
         last_delta_weights = m_delta_weights.at(it);
