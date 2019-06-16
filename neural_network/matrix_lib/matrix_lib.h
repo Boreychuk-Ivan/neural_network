@@ -7,6 +7,8 @@
 #include <cmath>  //fmod
 #include <limits> //numeric_limits
 
+#include "matrix_exception.h"
+
 template <class T>
 class Matrix
 {
@@ -17,9 +19,9 @@ protected:
 public:
     //Constructors
 	Matrix() : m_rows(0), m_cols(0){};
-	Matrix(const size_t rows, const size_t cols);
-	Matrix(const size_t rows, const size_t cols, T *mtx);
-    Matrix(const size_t rows, const size_t cols, std::vector<T> mtx);
+	Matrix(const int kRows, const int kCols);
+	Matrix(const int kRows, const int kCols, T *mtx);
+    Matrix(const int kRows, const int kCols, const std::vector<T>& kVector);
 	Matrix(const std::initializer_list<T> &list);
 
 	Matrix(const Matrix &mtx);
@@ -28,11 +30,11 @@ public:
 	Matrix &operator=(const T *);
 
     //Element callers
-	T &at(size_t cell) {assert(cell < m_rows * m_cols);	return m_matrix.at(cell);}
-	T &at(size_t row, size_t col){ return m_matrix.at(row * m_cols + col);}
+	T& at(size_t cell);
+	T& at(size_t row, size_t col);
 
-	T at(size_t cell) const{assert(cell < m_rows * m_cols); return m_matrix.at(cell);}
-	T at(size_t row, size_t col) const { return m_matrix.at(row * m_cols + col); }
+	T at(size_t cell) const;
+	T at(size_t row, size_t col) const;
 
     //Getters
 	std::vector<T> GetVector() const;
@@ -90,35 +92,32 @@ public:
 	friend Matrix<Tf> operator!(const Matrix<Tf> &kRightMtx); //Transpose
 
 	template <class Tf>
+	friend bool operator==(const Matrix<Tf>& kLeftMtx, const Matrix<Tf>& kRightMtx);
+
+	template <class Tf>
 	friend std::ostream &operator<<(std::ostream &out, const Matrix<Tf> &kRightMtx);
 };
 
 template <class T>
-Matrix<T>::Matrix(const size_t rows, const size_t cols) : m_rows(rows), m_cols(cols)
+Matrix<T>::Matrix(const int kRows, const int kCols) : m_rows(kRows), m_cols(kCols)
 {
-	m_matrix.reserve(rows * cols);
-	for (int it(0); it < rows * cols; ++it)
-		m_matrix.push_back(0);
+	MatrixException::assert_throw(kRows > 0 && kCols > 0, "Error <Matrix> : invalid contructor parametrs\n");
+	m_matrix = std::vector<T>(kRows * kCols);
 }
 
 template <class T>
-Matrix<T>::Matrix(const size_t rows, const size_t cols, T *mtx) : m_rows(rows), m_cols(cols)
+Matrix<T>::Matrix(const int kRows, const int kCols, T* mtx) : Matrix(kRows, kCols)
 {
-	m_matrix.reserve(rows * cols);
 	for (size_t it = 0; it < m_rows * m_cols; ++it)
-	{
-		m_matrix.push_back(*(mtx + it));
-	}
+		m_matrix.at(it) = (*(mtx + it));
 }
 
 template<class T>
-Matrix<T>::Matrix(const size_t rows, const size_t cols, std::vector<T> mtx)
+Matrix<T>::Matrix(const int kRows, const int kCols, const std::vector<T>& kVector) : Matrix(kRows, kCols)
 {
-    m_matrix.reserve(rows * cols);
-    assert(mtx.size() == rows * cols);
-    m_rows = rows;
-    m_cols = cols;
-    m_matrix = mtx;
+    MatrixException::assert_throw(kVector.size() == kRows * kCols, 
+		"Error <Matrix> : invalid contructor parametrs\n");
+    m_matrix = kVector;
 }
 
 template <class T>
@@ -128,9 +127,7 @@ Matrix<T>::Matrix(const std::initializer_list<T> &list)
 	m_rows = 1;
 	m_matrix.reserve(m_rows * m_cols);
 	for (auto &num : list)
-	{
 		m_matrix.push_back(num);
-	}
 }
 
 template <class T>
@@ -138,8 +135,6 @@ Matrix<T>::Matrix(const Matrix &mtx)
 {
 	m_rows = mtx.m_rows;
 	m_cols = mtx.m_cols;
-
-	m_matrix.clear();
 	m_matrix = mtx.m_matrix;
 }
 
@@ -148,7 +143,6 @@ Matrix<T> &Matrix<T>::operator=(const Matrix kRightMtx)
 {
 	this->m_cols = kRightMtx.m_cols;
 	this->m_rows = kRightMtx.m_rows;
-	this->m_matrix.clear();
 	this->m_matrix = kRightMtx.m_matrix;
 	return *this;
 }
@@ -177,35 +171,59 @@ Matrix<T> &Matrix<T>::operator=(const T *input_arr)
 	return *this;
 }
 
+template<class T>
+inline T& Matrix<T>::at(size_t cell)
+{
+	MatrixException::assert_throw(cell < m_rows * m_cols, "Error <at> : invalid cell number\n");	
+	return m_matrix.at(cell);
+}
+
+template<class T>
+inline T& Matrix<T>::at(size_t row, size_t col)
+{
+	MatrixException::assert_throw(row <= m_rows && col <= m_cols, "Error <at> : invalid input parametrs\n");
+	return m_matrix.at(row * m_cols + col);
+}
+
+template<class T>
+inline T Matrix<T>::at(size_t cell) const
+{
+	MatrixException::assert_throw(cell < m_rows * m_cols, "Error <at> : invalid cell number\n");
+	return m_matrix.at(cell);
+}
+
+template<class T>
+inline T Matrix<T>::at(size_t row, size_t col) const
+{
+	MatrixException::assert_throw(row <= m_rows && col <= m_cols, "Error <at> : invalid input parametrs\n");
+	return m_matrix.at(row * m_cols + col);
+}
+
 template <class T>
 Matrix<T> Matrix<T>::GetRow(const size_t kRow) const
 {
-	assert(kRow <= m_rows);
+	MatrixException::assert_throw(kRow <= m_rows, 
+		"Error <GetRow> : Invalid row number\n");
 	Matrix<T> row_vector(1, m_cols);
 	for (int col = 0; col < m_cols; ++col)
-	{
 		row_vector.at(col) = (this->at(kRow, col));
-	}
 	return row_vector;
 }
 
 template <class T>
 Matrix<T> Matrix<T>::GetCol(const size_t kCol) const
 {
-	assert(kCol <= m_cols);
+	MatrixException::assert_throw(kCol <= m_cols, "Error <GetCol> : Invalid col number\n");
 	Matrix<T> col_vector(m_rows, 1);
 	for (int row = 0; row < m_rows; ++row)
-	{
 		col_vector.at(row) = (this->at(row, kCol));
-	}
 	return col_vector;
 }
 
 template<class T>
 Matrix<T> Matrix<T>::GetMtx(const size_t kRowBeg, const size_t kColBeg, const size_t kRowEnd, const size_t kColEnd)
 {
-    assert(kRowBeg <= kRowEnd);
-    assert(kColBeg <= kColEnd);
+	MatrixException::assert_throw((kRowBeg <= kRowEnd) || (kColBeg <= kColEnd), "Error <GetMtx> : invalid matrix parametrs\n");
     Matrix<T> part_mtx(kRowEnd - kRowBeg + 1, kColEnd - kColBeg + 1);
     for(size_t row_it = 0; row_it <= kRowEnd - kRowBeg; ++row_it)
     {
@@ -220,23 +238,17 @@ Matrix<T> Matrix<T>::GetMtx(const size_t kRowBeg, const size_t kColBeg, const si
 template<class T>
 void Matrix<T>::SetRow(const size_t kRow, const std::vector<T>& kData)
 {
-    assert(kData.size() == m_cols && kRow <= m_rows &&
-        "Error: SetRow! Invalid size of vector");
+	MatrixException::assert_throw(kData.size() == m_cols && kRow <= m_rows, "Error <SetRow> : Invalid size of vector");
     for (int it = 0; it < m_cols; ++it)
-    {
         this->at(kRow, it) = kData.at(it);
-    }
 }
 
 template<class T>
 void Matrix<T>::SetCol(const size_t kCol, const std::vector<T>& kData)
 {
-    assert(kData.size() == m_rows && kCol <= m_cols &&
-        "Error: SetCol! Invalid size of vector");
+	MatrixException::assert_throw(kData.size() == m_rows && kCol <= m_cols, "Error <SetCol>: Invalid size of vector");
     for (int it = 0; it < m_rows; ++it)
-    {
         this->at(it, kCol) = kData.at(it);
-    }
 }
 
 template <class T>
@@ -288,12 +300,11 @@ T Matrix<T>::MinElement() const
 template <class T>
 inline Matrix<T> Matrix<T>::DotMult(const Matrix<T> &kRightMtx) const
 {
-	assert(m_cols == kRightMtx.m_cols && m_rows == kRightMtx.m_rows);
+	MatrixException::assert_throw(m_cols == kRightMtx.m_cols && m_rows == kRightMtx.m_rows,
+		"Error <DotMult> : Invalid matrix sizes\n");
     Matrix<T> result_mtx(*this);
 	for (int it = 0; it < m_matrix.size(); ++it)
-	{
 		result_mtx.at(it) *= kRightMtx.at(it);
-	}
 	return result_mtx;
 }
 
@@ -316,8 +327,8 @@ template <class T>
 Matrix<T> operator+(const Matrix<T> &kLeftMtx, const Matrix<T> &kRightMtx)
 {
 	Matrix<T> mtx_sum(kLeftMtx);
-	assert(kLeftMtx.m_cols == kRightMtx.m_cols);
-	assert(kLeftMtx.m_rows == kRightMtx.m_rows);
+	MatrixException::assert_throw(kLeftMtx.m_cols == kRightMtx.m_cols && 
+		kLeftMtx.m_rows == kRightMtx.m_rows, "Error <operator+> : Invalid matrix sizes\n");
 
 	for (int it(0); it < kLeftMtx.GetSize(); ++it)
 	{
@@ -331,9 +342,7 @@ Matrix<Tf> operator+(const Matrix<Tf> &kLeftMtx, Tf num)
 {
 	Matrix<Tf> mtx_sum(kLeftMtx);
 	for (int it(0); it < kLeftMtx.GetSize(); ++it)
-	{
 		mtx_sum.at(it) += num;
-	}
 	return mtx_sum;
 }
 
@@ -345,9 +354,7 @@ Matrix<Tf> operator-(const Matrix<Tf> &kLeftMtx, Tf num)
 {
 	Matrix<Tf> mtx_diff(kLeftMtx);
 	for (int it(0); it < kLeftMtx.GetSize(); ++it)
-	{
 		mtx_diff.at(it) = kLeftMtx.at(it) - num;
-	}
 	return mtx_diff;
 }
 
@@ -355,20 +362,19 @@ template <class Tf>
 Matrix<Tf> operator-(const Matrix<Tf> &kLeftMtx, const Matrix<Tf> &kRightMtx)
 {
 	Matrix<Tf> mtx_diff(kLeftMtx);
-	assert(kLeftMtx.m_cols == kRightMtx.m_cols);
-	assert(kLeftMtx.m_rows == kRightMtx.m_rows);
+	MatrixException::assert_throw(kLeftMtx.m_cols == kRightMtx.m_cols && 
+		kLeftMtx.m_rows == kRightMtx.m_rows, "Error <operator-> : Invalid matrix sizes\n");
 
 	for (int it(0); it < kLeftMtx.GetSize(); ++it)
-	{
 		mtx_diff.at(it) = kLeftMtx.at(it) - kRightMtx.at(it);
-	}
 	return mtx_diff;
 }
 
 template <class Tf>
 Matrix<Tf> operator*(const Matrix<Tf> &kLeftMtx, const Matrix<Tf> &kRightMtx)
 {
-	assert(kLeftMtx.m_cols == kRightMtx.m_rows);
+	MatrixException::assert_throw(kLeftMtx.m_cols == kRightMtx.m_rows, 
+		"Error <operator*> : Invalid matrix sizes\n");
 	Matrix<Tf> mtx_prod(kLeftMtx.m_rows, kRightMtx.m_cols);
 
 	for (int row = 0; row < kLeftMtx.m_rows; ++row)
@@ -401,14 +407,15 @@ Matrix<Tf> operator*(const Matrix<Tf> &kLeftMtx, const Tf &num)
 {
 	Matrix<Tf> product_mtx(kLeftMtx);
 	for (int it = 0; it < kLeftMtx.GetSize(); ++it)
-	{
 		product_mtx.at(it) = kLeftMtx.at(it) * num;
-	}
 	return product_mtx;
 }
 
 template <class Tf>
-Matrix<Tf> operator*(const Tf &num, const Matrix<Tf> &kRightMtx) { return (kRightMtx * num); }
+Matrix<Tf> operator*(const Tf &num, const Matrix<Tf> &kRightMtx)
+{ 
+	return (kRightMtx * num); 
+}
 
 template <class Tf>
 Matrix<Tf> operator%(const Matrix<Tf> &kLeftMtx, const Tf &num)
@@ -455,6 +462,16 @@ Matrix<Tf> operator!(const Matrix<Tf> &kRightMtx)
 		}
 	}
 	return transope_mtx;
+}
+
+template<class Tf>
+inline bool operator==(const Matrix<Tf>& kLeftMtx, const Matrix<Tf>& kRightMtx)
+{
+	if (!kLeftMtx.IsEqualSize(kRightMtx)) return 0;
+	for (size_t it = 0; it < kLeftMtx.GetSize(); ++it)
+		if (kLeftMtx.at(it) != kRightMtx.at(it)) return 0;
+	return 1;
+
 }
 
 template <class T>
