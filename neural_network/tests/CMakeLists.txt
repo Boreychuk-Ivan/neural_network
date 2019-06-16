@@ -18,6 +18,7 @@ set (SOURCES matrix_tests.h>
              file_handler_tests.h>
              back_propagation_tests.h>
              run_all_tests.cpp>
+             auxillary_functions.h>
              )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
