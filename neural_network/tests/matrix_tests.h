@@ -2,20 +2,10 @@
 
 #include "pch.h"
 #include "matrix_lib/matrix_lib.h"
+#include "auxillary_functions.h"
 
 #include <gtest/gtest.h>
 
-// Auxillary methods
-template <class T>
-bool CompareVector(const std::vector<T>& kV_0, const std::vector<T>& kV_1)
-{
-	if (kV_0.size() != kV_1.size()) return 0;
-	for (size_t it = 0; it < kV_0.size(); ++it)
-	{
-		if (kV_0.at(it) != kV_1.at(it)) return 0;
-	}
-	return 1;
-}
 
 
 // Tests
@@ -32,8 +22,8 @@ TEST(Matrix_tests, t0_constructors)
 
 	Matrix<int> matrix_2{ 2, 5, {0,1,2,3,4,5,6,7,8,9} };
 	ASSERT_TRUE(matrix_2.GetRowsNum() == 2 && matrix_2.GetColsNum() == 5);
-	ASSERT_TRUE(CompareVector<int>(matrix_2.GetRow(0).GetVector(), { 0,1,2,3,4 }));
-	ASSERT_TRUE(CompareVector<int>(matrix_2.GetRow(1).GetVector(), { 5,6,7,8,9}));
+	ASSERT_TRUE(aux::CompareVector<int>(matrix_2.GetRow(0).GetVector(), { 0,1,2,3,4 }));
+	ASSERT_TRUE(aux::CompareVector<int>(matrix_2.GetRow(1).GetVector(), { 5,6,7,8,9}));
 }
 
 TEST(Matrix_tests, t1_get_matrix_part)

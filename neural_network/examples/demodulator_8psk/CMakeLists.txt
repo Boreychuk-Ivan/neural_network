@@ -9,6 +9,7 @@ include_directories(./data)
 FILE(COPY ./data DESTINATION ${PROJECT_BINARY_DIR})
 
 link_directories(${CMAKE_SOURCE_DIR}/neural_network_lib)
+
 include_directories(${CMAKE_SOURCE_DIR}/neural_network_lib)
 
 add_executable(${PROJECT_NAME} ${SOURCES})

@@ -3,6 +3,7 @@
 #include "layer.h"
 #include <gtest/gtest.h>
 
+
 Layer CreateTestLayer()
 {
 	srand(0);
