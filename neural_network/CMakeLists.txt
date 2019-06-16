@@ -18,6 +18,7 @@ add_subdirectory(neural_network_lib)
 add_subdirectory(matrix_lib)
 add_subdirectory(project)
 add_subdirectory(examples)
+add_subdirectory(tests)
 
 #PCH
 set(PCH_SOURCES pch.cpp pch.h)
