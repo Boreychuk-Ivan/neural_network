@@ -7,7 +7,7 @@ class Layer
 {
 public:
     Layer() = delete;
-    Layer(const size_t& kInputsNumber, const size_t& kNeuronsNumber,
+    Layer(const int& kInputsNumber, const int& kNeuronsNumber,
           const ActivationFunctionType& kActivationFunction);
 
     void InitializeRandomWeights(const double& min_value, const double& max_value);

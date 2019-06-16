@@ -11,5 +11,5 @@ public:
     
     //Matrix and vector
     Matrix<double> ReadMatrixFromFile(std::ifstream* file, std::streampos pos, const size_t& kRows, const size_t& kCols);
-    std::vector<unsigned> ReadVectorFromFile(std::ifstream* file, std::streampos pos);
+    std::vector<int> ReadVectorFromFile(std::ifstream* file, std::streampos pos);
 };

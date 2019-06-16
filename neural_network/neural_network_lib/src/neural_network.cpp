@@ -1,11 +1,14 @@
 #include "neural_network.h"
 
-NeuralNetwork::NeuralNetwork(const std::vector<unsigned>& kArchitecture)
+NeuralNetwork::NeuralNetwork(const std::vector<int>& kArchitecture)
 {
-    unsigned layers_number = kArchitecture.size();   
+    unsigned layers_number = kArchitecture.size();
+	err::assert_throw(layers_number>1, "Error <NeuralNetwork> : Invalid constructor parametrs\n");
     m_neuron_layers.reserve(layers_number);
     for (size_t layer_it = 0; layer_it < layers_number-1; ++layer_it)
     {
+		err::assert_throw((kArchitecture.at(layer_it) > 0) && (kArchitecture.at(layer_it + 1) > 0),
+			"Error <NeuralNetwork> : Invalid constructor parametrs\n");
         m_neuron_layers.push_back(Layer(kArchitecture.at(layer_it), kArchitecture.at(layer_it + 1), SIGMOID));
     }
     m_neuron_layers.at(layers_number - 2).SetActivationFunction(SIGMOID);  //Output layer

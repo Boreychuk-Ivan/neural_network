@@ -37,14 +37,14 @@ NeuralNetwork FileHander::ReadNeuralNetworkFromFile(const std::string & kFilePat
     std::string input_line;
     std::getline(file, input_line, ':');
     err::assert_throw(input_line == "Neural network(layers)", "Error <ReadNeuralNetworkFromFile>: reading problem\n");
-    std::vector<unsigned> architecture = ReadVectorFromFile(&file, file.tellg());
+    std::vector<int> architecture = ReadVectorFromFile(&file, file.tellg());
     file.get(); //'\n'
     NeuralNetwork neureal_network(architecture);
     for (size_t it = 0; it < architecture.size()-1; ++it)
     {
         std::getline(file, input_line, ':'); 
 		err::assert_throw(input_line == "# Layer(inputs,neurons)", "Error <ReadNeuralNetworkFromFile>: read problem\n");
-        std::vector<unsigned> layer_params = ReadVectorFromFile(&file, file.tellg());
+        std::vector<int> layer_params = ReadVectorFromFile(&file, file.tellg());
         file.get(); //'\n'
         
         std::getline(file, input_line, ':');
@@ -98,11 +98,11 @@ Matrix<double> FileHander::ReadMatrixFromFile(std::ifstream* file, std::streampo
     return read_mtx;
 }
 
-std::vector<unsigned> FileHander::ReadVectorFromFile(std::ifstream * file, std::streampos pos)
+std::vector<int> FileHander::ReadVectorFromFile(std::ifstream * file, std::streampos pos)
 {
     if(file->tellg() != pos) file->seekg(pos);
 
-    std::vector<unsigned> return_vector;
+    std::vector<int> return_vector;
     while (file->peek() != '\n')
     {
         if (isdigit(file->peek()))

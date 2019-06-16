@@ -1,9 +1,10 @@
 #include "layer.h"
 
-Layer::Layer(const size_t& kInputsNumber, const size_t& kNeuronsNumber, const ActivationFunctionType& activation_function) :
+Layer::Layer(const int& kInputsNumber, const int& kNeuronsNumber, const ActivationFunctionType& activation_function) :
     m_neurons(kNeuronsNumber, Neuron(0, activation_function)), m_synaptic_weights(kNeuronsNumber, kInputsNumber),
     m_biases(kNeuronsNumber)
 {
+	err::assert_throw((kInputsNumber > 0) && (kNeuronsNumber > 0), "Error <Layer> : Invalid constructor parametrs\n");
     InitializeRandomWeights(-1,1);      //Liniar part of sigmoid function
     InitializeRandomBiases(-1, 1);
 }

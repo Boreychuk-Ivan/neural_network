@@ -8,7 +8,7 @@ class NeuralNetwork
 {
 public:
     NeuralNetwork() = delete;
-    NeuralNetwork(const std::vector<unsigned>& kArchitecture);
+    NeuralNetwork(const std::vector<int>& kArchitecture);
     
     Vector<double> CalculateOutputs(const Vector<double> kInputVector);
 	Vector<double> FeedForward(const Vector<double> kInputVector);		//Calculate outputs + derivative values
