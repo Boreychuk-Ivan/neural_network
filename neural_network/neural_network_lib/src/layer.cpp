@@ -1,8 +1,8 @@
 #include "layer.h"
 
-Layer::Layer(const unsigned& inputs_number, const unsigned& neurons_number, const ActivationFunctionType& activation_function) :
-    m_neurons(neurons_number, Neuron(0, activation_function)), m_synaptic_weights(neurons_number, inputs_number),
-    m_biases(neurons_number)
+Layer::Layer(const size_t& kInputsNumber, const size_t& kNeuronsNumber, const ActivationFunctionType& activation_function) :
+    m_neurons(kNeuronsNumber, Neuron(0, activation_function)), m_synaptic_weights(kNeuronsNumber, kInputsNumber),
+    m_biases(kNeuronsNumber)
 {
     InitializeRandomWeights(-1,1);      //Liniar part of sigmoid function
     InitializeRandomBiases(-1, 1);
