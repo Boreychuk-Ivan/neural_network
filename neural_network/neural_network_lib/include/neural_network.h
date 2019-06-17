@@ -14,14 +14,14 @@ public:
 	Vector<double> FeedForward(const Vector<double> kInputVector);		//Calculate outputs + derivative values
 	
     //Setters
-    void SetActivationFunction(const unsigned& kNumLayer, const ActivationFunctionType& kActivationFunction);
-    void SetSynapticWeigths(const unsigned& kNumLayer, const Matrix<double> kSynapticWeigths);
-    void SetBiases(const unsigned& kNumLayer, const Vector<double> kBiases);
+    void SetActivationFunction(const size_t& kNumLayer, const ActivationFunctionType& kActivationFunction);
+    void SetSynapticWeigths(const size_t& kNumLayer, const Matrix<double> kSynapticWeigths);
+    void SetBiases(const size_t& kNumLayer, const Vector<double> kBiases);
 
     //Getters
     Vector<double> GetOutputs() const;
-    Layer GetLayer(const unsigned& kNumLayer) const;
-    Layer& GetLayer(const unsigned& kNumLayer);
+    Layer GetLayer(const size_t& kNumLayer) const;
+    Layer& GetLayer(const size_t& kNumLayer);
 
     size_t GetLayersNumber() const;
     size_t GetInputsNumber() const;
@@ -31,8 +31,8 @@ public:
     void DisplayArchitecture();
     void DisplayLayers();
     void DisplayNeurons();
-    void DisplayLayerParametrs(const unsigned& kNumLayer);
-    void DisplayLayerNeurons(const unsigned& kNumLayer);
+    void DisplayLayerParametrs(const size_t& kNumLayer);
+    void DisplayLayerNeurons(const size_t& kNumLayer);
 
 private:
     std::vector<Layer> m_neuron_layers;

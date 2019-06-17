@@ -2,7 +2,7 @@
 
 NeuralNetwork::NeuralNetwork(const std::vector<int>& kArchitecture)
 {
-    unsigned layers_number = kArchitecture.size();
+    size_t layers_number = kArchitecture.size();
 	err::assert_throw(layers_number>1, "Error <NeuralNetwork> : Invalid constructor parametrs\n");
     m_neuron_layers.reserve(layers_number);
     for (size_t layer_it = 0; layer_it < layers_number-1; ++layer_it)
@@ -28,27 +28,27 @@ Vector<double> NeuralNetwork::CalculateOutputs(const Vector<double> kInputVector
 Vector<double> NeuralNetwork::FeedForward(const Vector<double> kInputVector)
 {
 	Vector<double> input_next_layer = m_neuron_layers.at(0).CalculateActivatedValues(kInputVector);
-	m_neuron_layers.at(0).CalculateDerivativeValues(kInputVector);
+	auto tmp = m_neuron_layers.at(0).CalculateDerivativeValues(kInputVector);
 	for (size_t layer_it = 0; layer_it < m_neuron_layers.size()-1; ++layer_it)
 	{
-		m_neuron_layers.at(layer_it + 1).CalculateDerivativeValues(input_next_layer);
+		tmp = m_neuron_layers.at(layer_it + 1).CalculateDerivativeValues(input_next_layer);
 		input_next_layer = m_neuron_layers.at(layer_it + 1).CalculateActivatedValues(input_next_layer);
 	}
 	return m_neuron_layers.back().GetActivatedValues();
 }
 
 
-void NeuralNetwork::SetActivationFunction(const unsigned& kNumLayer, const ActivationFunctionType& kActivationFunction)
+void NeuralNetwork::SetActivationFunction(const size_t& kNumLayer, const ActivationFunctionType& kActivationFunction)
 {
     m_neuron_layers.at(kNumLayer).SetActivationFunction(kActivationFunction);
 }
 
-void NeuralNetwork::SetSynapticWeigths(const unsigned& kNumLayer, const Matrix<double> kSynapticWeigths)
+void NeuralNetwork::SetSynapticWeigths(const size_t& kNumLayer, const Matrix<double> kSynapticWeigths)
 {
     m_neuron_layers.at(kNumLayer).SetSynapticWeights(kSynapticWeigths);
 }
 
-void NeuralNetwork::SetBiases(const unsigned& kNumLayer, const Vector<double> kBiases)
+void NeuralNetwork::SetBiases(const size_t& kNumLayer, const Vector<double> kBiases)
 {
     m_neuron_layers.at(kNumLayer).SetBiases(kBiases);
 }
@@ -59,12 +59,12 @@ Vector<double> NeuralNetwork::GetOutputs() const
     return m_neuron_layers.back().GetActivatedValues();
 }
 
-Layer NeuralNetwork::GetLayer(const unsigned & kNumLayer) const
+Layer NeuralNetwork::GetLayer(const size_t & kNumLayer) const
 {
     return m_neuron_layers.at(kNumLayer);
 }
 
-Layer& NeuralNetwork::GetLayer(const unsigned& kNumLayer)
+Layer& NeuralNetwork::GetLayer(const size_t& kNumLayer)
 {
     return m_neuron_layers.at(kNumLayer);
 }
@@ -116,12 +116,12 @@ void NeuralNetwork::DisplayNeurons()
     }
 }
 
-void NeuralNetwork::DisplayLayerParametrs(const unsigned & kNumLayer)
+void NeuralNetwork::DisplayLayerParametrs(const size_t & kNumLayer)
 {
     m_neuron_layers.at(kNumLayer).Display();
 }
 
-void NeuralNetwork::DisplayLayerNeurons(const unsigned & kNumLayer)
+void NeuralNetwork::DisplayLayerNeurons(const size_t & kNumLayer)
 {
     m_neuron_layers.at(kNumLayer).DisplayNeurons();
 }

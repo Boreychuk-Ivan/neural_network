@@ -102,7 +102,7 @@ template <class T>
 Matrix<T>::Matrix(const int kRows, const int kCols) : m_rows(kRows), m_cols(kCols)
 {
 	MatrixException::assert_throw(kRows > 0 && kCols > 0, "Error <Matrix> : invalid contructor parametrs\n");
-	m_matrix = std::vector<T>(kRows * kCols);
+	m_matrix = std::vector<T>(static_cast<int64_t>(kRows) * static_cast<int64_t>(kCols));
 }
 
 template <class T>
@@ -204,7 +204,7 @@ Matrix<T> Matrix<T>::GetRow(const size_t kRow) const
 {
 	MatrixException::assert_throw(kRow <= m_rows, 
 		"Error <GetRow> : Invalid row number\n");
-	Matrix<T> row_vector(1, m_cols);
+	Matrix<T> row_vector(1, (int)m_cols);
 	for (int col = 0; col < m_cols; ++col)
 		row_vector.at(col) = (this->at(kRow, col));
 	return row_vector;
@@ -214,7 +214,7 @@ template <class T>
 Matrix<T> Matrix<T>::GetCol(const size_t kCol) const
 {
 	MatrixException::assert_throw(kCol <= m_cols, "Error <GetCol> : Invalid col number\n");
-	Matrix<T> col_vector(m_rows, 1);
+	Matrix<T> col_vector((int)m_rows, 1);
 	for (int row = 0; row < m_rows; ++row)
 		col_vector.at(row) = (this->at(row, kCol));
 	return col_vector;
@@ -224,7 +224,7 @@ template<class T>
 Matrix<T> Matrix<T>::GetMtx(const size_t kRowBeg, const size_t kColBeg, const size_t kRowEnd, const size_t kColEnd)
 {
 	MatrixException::assert_throw((kRowBeg <= kRowEnd) || (kColBeg <= kColEnd), "Error <GetMtx> : invalid matrix parametrs\n");
-    Matrix<T> part_mtx(kRowEnd - kRowBeg + 1, kColEnd - kColBeg + 1);
+    Matrix<T> part_mtx((int)(kRowEnd - kRowBeg + 1), (int)(kColEnd - kColBeg + 1));
     for(size_t row_it = 0; row_it <= kRowEnd - kRowBeg; ++row_it)
     {
         for(size_t col_it = 0; col_it <= kColEnd - kColBeg; ++col_it)
@@ -375,7 +375,7 @@ Matrix<Tf> operator*(const Matrix<Tf> &kLeftMtx, const Matrix<Tf> &kRightMtx)
 {
 	MatrixException::assert_throw(kLeftMtx.m_cols == kRightMtx.m_rows, 
 		"Error <operator*> : Invalid matrix sizes\n");
-	Matrix<Tf> mtx_prod(kLeftMtx.m_rows, kRightMtx.m_cols);
+	Matrix<Tf> mtx_prod((int)kLeftMtx.m_rows, (int)kRightMtx.m_cols);
 
 	for (int row = 0; row < kLeftMtx.m_rows; ++row)
 	{
@@ -453,7 +453,7 @@ inline Matrix<float> operator%(const Matrix<float> &kLeftMtx, const float &num)
 template <class Tf>
 Matrix<Tf> operator!(const Matrix<Tf> &kRightMtx)
 {
-	Matrix<Tf> transope_mtx(kRightMtx.m_cols, kRightMtx.m_rows);
+	Matrix<Tf> transope_mtx((int)kRightMtx.m_cols, (int)kRightMtx.m_rows);
 	for (int row = 0; row < kRightMtx.m_rows; ++row)
 	{
 		for (int col = 0; col < kRightMtx.m_cols; ++col)

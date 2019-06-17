@@ -75,7 +75,7 @@ Matrix<double> FileHander::ReadMatrixFromFile(std::ifstream* file, std::streampo
 {
 	err::assert_throw(file->is_open(), "Error <ReadMatrixFromFile> : file was not opened\n");
     file->seekg(pos);
-    Matrix<double> read_mtx(kRows, kCols);
+    Matrix<double> read_mtx((int)kRows, (int)kCols);
     size_t row_it = 0;
     size_t col_it = 0;
     while (row_it < kRows)
@@ -109,7 +109,7 @@ std::vector<int> FileHander::ReadVectorFromFile(std::ifstream * file, std::strea
         {
             size_t neurons_num;
             *file >> neurons_num;
-            return_vector.push_back(neurons_num);
+            return_vector.push_back((int)neurons_num);
         }
         else
         {
