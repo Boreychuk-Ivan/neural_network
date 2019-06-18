@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pch.h"
-#include "auxillary_functions.h"
+#include "../auxillary_functions.h"
 #include "back_propagation.h"
 #include <gtest/gtest.h>
 
@@ -59,5 +59,10 @@ TEST(Back_propagation_tests, t2_calculate_delta_biases)
 	//Error check
 	ASSERT_THROW(bp.CalculateDeltaBiases(kLearningRate, kMomentum, {}, kLastDeltaBiases), MatrixException);
 	ASSERT_THROW(bp.CalculateDeltaBiases(kLearningRate, kMomentum, kLocalGradient, {}), MatrixException);
-	
+}
+
+int main(int argc, char* argv[])
+{
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }

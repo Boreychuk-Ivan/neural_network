@@ -40,6 +40,10 @@ TEST(Neuron_tests, t0_calculate_derivative_value)
 	ASSERT_TRUE((derivative_0_actial - derivative_0_expect) < 1e-3);
 	ASSERT_TRUE((derivative_1_actial - derivative_1_expect) < 1e-3);
 	ASSERT_TRUE((derivative_2_actial - derivative_2_expect) < 1e-3);
+}
 
-
+int main(int argc, char* argv[])
+{
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }

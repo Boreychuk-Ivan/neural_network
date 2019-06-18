@@ -1,5 +1,5 @@
 #pragma once
-#include "auxillary_functions.h"
+#include "../auxillary_functions.h"
 #include "neural_network.h"
 #include <gtest/gtest.h>
 
@@ -42,4 +42,10 @@ TEST(Neural_network_tests, t2_feed_forward)
 	
 	ASSERT_TRUE(aux::CompareVector<double>(dvalues_layer0_actual.GetVector(), dvalues_layer0_expect.GetVector()));
 	ASSERT_TRUE(aux::CompareVector<double>(dvalues_layer1_actual.GetVector(), dvalues_layer1_expect.GetVector()));
+}
+
+int main(int argc, char* argv[])
+{
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }
