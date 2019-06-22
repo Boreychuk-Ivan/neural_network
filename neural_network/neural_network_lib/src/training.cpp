@@ -82,7 +82,7 @@ void Training::TrainNeuralNetwork(const size_t& kEpochNumber)
 
 double Training::CalculateError()
 {
-    Matrix<double> actual_outputs((int)m_training_set_size, (int)m_outputs_number);
+    Matrix<double> actual_outputs(m_training_set_size, m_outputs_number);
     for (size_t it = 0; it < m_training_set_size; ++it)
     {
         Vector<double> input_data = m_input_matrix.GetRow(it);

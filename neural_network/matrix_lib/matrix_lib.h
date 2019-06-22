@@ -115,7 +115,7 @@ Matrix<T>::Matrix(const int kRows, const int kCols, T* mtx) : Matrix(kRows, kCol
 template<class T>
 Matrix<T>::Matrix(const int kRows, const int kCols, const std::vector<T>& kVector) : Matrix(kRows, kCols)
 {
-    MatrixException::assert_throw(kVector.size() == (static_cast<int64_t>(kRows)* static_cast<int64_t>(kCols)),
+    MatrixException::assert_throw(kVector.size() == kRows * kCols, 
 		"Error <Matrix> : invalid contructor parametrs\n");
     m_matrix = kVector;
 }

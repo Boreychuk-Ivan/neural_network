@@ -41,12 +41,12 @@ void Layer::AdjustmentBiases(const Vector<double> kDeltaBiases)
 
 Vector<double> Layer::CalculateLocalFields(const Vector<double> kInputVector)
 {
-    size_t inputs_number = m_synaptic_weights.GetColsNum();
+    unsigned inputs_number = m_synaptic_weights.GetColsNum();
 	err::assert_throw(kInputVector.GetSize() == inputs_number, "Error <CalculateLocalFields> : Invalid input vector\n");
 
 	Vector<double> inputs = (kInputVector.IsRow()) ? !kInputVector : kInputVector;
 
-    size_t neurons_number = m_neurons.size();
+    unsigned neurons_number = m_neurons.size();
     Vector<double> local_field(neurons_number);
     local_field = (m_synaptic_weights * inputs + !m_biases);
     SetLocalField(local_field);
@@ -77,7 +77,7 @@ void Layer::SetActivationFunction(const ActivationFunctionType & kActivationFunc
 
 void Layer::SetLocalField(const Vector<double> kLocalFieldVector)
 {
-	size_t neurons_num = m_neurons.size();
+    int neurons_num = m_neurons.size();
 	err::assert_throw(neurons_num == kLocalFieldVector.GetSize(), "Error <SetLocalField> : Invalid input vector\n");
     for (int it = 0; it < neurons_num; ++it)
         m_neurons.at(it).SetLocalField(kLocalFieldVector.at(it));
