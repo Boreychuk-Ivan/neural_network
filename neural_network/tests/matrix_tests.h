@@ -2,9 +2,11 @@
 
 #include "pch.h"
 #include "matrix_lib/matrix_lib.h"
-#include "../auxillary_functions.h"
+#include "auxillary_functions.h"
 
 #include <gtest/gtest.h>
+
+
 
 // Tests
 TEST(Matrix_tests, t0_constructors)
@@ -103,10 +105,4 @@ TEST(Matrix_tests, t8_transpose)
 	Matrix<int> matrix_transpose = !matrix_0;
 	Matrix<int> expect_transpose(2, 2, {1,3, 2,4});
 	ASSERT_TRUE(matrix_transpose == expect_transpose);
-}
-
-int main(int argc, char* argv[])
-{
-	::testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
 }

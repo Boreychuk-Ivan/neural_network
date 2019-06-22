@@ -2,7 +2,7 @@
 
 #include "layer.h"
 #include <gtest/gtest.h>
-#include "../auxillary_functions.h"
+#include "auxillary_functions.h"
 
 
 TEST(Layer_tests, t0_random_initialisation)
@@ -98,10 +98,4 @@ TEST(Layer_tests, t5_adjustment_biases)
 
 	ASSERT_THROW(layer.AdjustmentBiases({}), MatrixException);
 	ASSERT_THROW(layer.AdjustmentBiases({1,2,3,4}), MatrixException);
-}
-
-int main(int argc, char* argv[])
-{
-	::testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
 }
